@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B343E166-5621-4749-8BD8-41B20C03C771</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AirNativeShare</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>62188A4C-E837-407F-A6C9-6769425FD8CD</key>
+		<string>https://github.com/freshplanet/ANE-Alert.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ios/AirNativeShare.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>62188A4C-E837-407F-A6C9-6769425FD8CD</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/freshplanet/ANE-Alert.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>62188A4C-E837-407F-A6C9-6769425FD8CD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>62188A4C-E837-407F-A6C9-6769425FD8CD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ANE-Native-Share</string>
+		</dict>
+	</array>
+</dict>
+</plist>
