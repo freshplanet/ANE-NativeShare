@@ -41,6 +41,7 @@ package com.freshplanet.ane.AirNativeShare
 
 		public function setDefaultLink(value:String):void
 		{
+			defaultLink = value;
 			messageLink = value;
 			mailLink = value;
 			facebookLink = value;
