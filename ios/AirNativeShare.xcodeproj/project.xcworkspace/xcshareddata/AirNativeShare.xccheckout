@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>B343E166-5621-4749-8BD8-41B20C03C771</string>
+	<string>DE0431AA-D6D8-4835-AF24-E1830E6C6D47</string>
 	<key>IDESourceControlProjectName</key>
 	<string>AirNativeShare</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>62188A4C-E837-407F-A6C9-6769425FD8CD</key>
-		<string>https://github.com/freshplanet/ANE-Alert.git</string>
+		<key>4695C1A4-687C-42A1-9547-48FE2B90CAE3</key>
+		<string>ssh://github.com/freshplanet/ANE-NativeShare.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>ios/AirNativeShare.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>62188A4C-E837-407F-A6C9-6769425FD8CD</key>
+		<key>4695C1A4-687C-42A1-9547-48FE2B90CAE3</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/freshplanet/ANE-Alert.git</string>
+	<string>ssh://github.com/freshplanet/ANE-NativeShare.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>62188A4C-E837-407F-A6C9-6769425FD8CD</string>
+	<string>4695C1A4-687C-42A1-9547-48FE2B90CAE3</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>62188A4C-E837-407F-A6C9-6769425FD8CD</string>
+			<string>4695C1A4-687C-42A1-9547-48FE2B90CAE3</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ANE-Native-Share</string>
 		</dict>

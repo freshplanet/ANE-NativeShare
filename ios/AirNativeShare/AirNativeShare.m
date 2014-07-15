@@ -49,11 +49,11 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
             NSLog(@"couldn't get link");
         }
         
-        if (FREGetObjectProperty(argv[0], (const uint8_t*)"bitmapData", &propertyValue, &exception) == FRE_OK)
+        if (argc > 1)
         {
             NSLog(@"got bitmapData");
             FREBitmapData bitmapData;
-            if (FREAcquireBitmapData(propertyValue, &bitmapData) == FRE_OK)
+            if (FREAcquireBitmapData(argv[1], &bitmapData) == FRE_OK)
             {
                 
                 // make data provider from buffer
@@ -79,12 +79,19 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
                 }
                 
                 CGColorRenderingIntent  renderingIntent     = kCGRenderingIntentDefault;
-                CGImageRef              imageRef            = CGImageCreate(bitmapData.width, bitmapData.height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
+                CGImageRef imageRef           = CGImageCreate(bitmapData.width, bitmapData.height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
                 
                 // make UIImage from CGImage
                 image = [UIImage imageWithCGImage:imageRef];
                 
-                FREReleaseBitmapData(propertyValue);
+                FREReleaseBitmapData(argv[1]);
+                
+                NSData *imageData= UIImageJPEGRepresentation(image,0.0);
+                NSString *imagePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"/test.jpg"];
+                [imageData writeToFile:imagePath atomically:YES];
+
+                
+                image = [UIImage imageWithContentsOfFile:imagePath];
             }
         } else
         {
@@ -92,6 +99,7 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
         }
 
     }
+    
 
     NSMutableArray *activityItems = [[NSMutableArray alloc] init];
     if (caption)
@@ -124,6 +132,8 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
 
     NSLog(@"showing root");
 
+    
+    
     
     UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
 

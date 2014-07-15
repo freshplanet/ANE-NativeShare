@@ -18,6 +18,7 @@
 
 package com.freshplanet.ane.AirNativeShare
 {
+	import flash.display.BitmapData;
 	import flash.events.EventDispatcher;
 	import flash.events.StatusEvent;
 	import flash.external.ExtensionContext;
@@ -62,11 +63,17 @@ package com.freshplanet.ane.AirNativeShare
 			return _instance ? _instance : new AirNativeShare();
 		}
 
-		public function showShare( shareObject:AirNativeShareObject ) : void
+		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null ) : void
 		{
 			if (!isSupported) return;
 
-			_context.call("AirNativeShareShowShare", shareObject);
+			if (bitmapData)
+			{
+				_context.call("AirNativeShareShowShare", shareObject, bitmapData);
+			} else
+			{
+				_context.call("AirNativeShareShowShare", shareObject);
+			}
 
 		}
 
