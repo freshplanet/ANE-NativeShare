@@ -39,7 +39,7 @@ package com.freshplanet.ane.AirNativeShare
 		/** AirAlert is supported on iOS and Android devices. */
 		public function get isSupported() : Boolean
 		{
-			if ( Capabilities.manufacturer.indexOf("iOS") != -1 )
+			if ( Capabilities.manufacturer.indexOf("iOS") == -1 )
 			{
 				return false;
 			}
@@ -48,7 +48,7 @@ package com.freshplanet.ane.AirNativeShare
 				return _isSupportedOnIOS;
 			} else
 			{
-				_isSupportedOnIOS = _context.call("AirNativeShareIsSupported");
+				_isSupportedOnIOS = _context.call("AirNativeShareIsSupported") as Boolean;
 				return _isSupportedOnIOS;
 			}
 
