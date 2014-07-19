@@ -10,6 +10,7 @@
 @interface CustomLink ()
 {
 }
+@property(nonatomic, retain) NSString *defaultLink;
 @property(nonatomic, retain) NSString *messageLink;
 @property(nonatomic, retain) NSString *mailLink;
 @property(nonatomic, retain) NSString *facebookLink;
@@ -17,6 +18,7 @@
 @property(nonatomic, retain) NSString *vimeoLink;
 @property(nonatomic, retain) NSString *weiboLink;
 @property(nonatomic, retain) NSString *twitterLink;
+@property(nonatomic, retain) NSString *pinterestImageLink;
 @end
 
 @implementation CustomLink
@@ -29,6 +31,7 @@
     }
     if ([self initWithString:urlPath])
     {
+        self.defaultLink = [self getPropertyFromObject:object withName:(const uint8_t*)"defaultLink"];
         self.messageLink = [self getPropertyFromObject:object withName:(const uint8_t*)"messageLink"];
         self.mailLink = [self getPropertyFromObject:object withName:(const uint8_t*)"mailLink"];
         self.facebookLink = [self getPropertyFromObject:object withName:(const uint8_t*)"facebookLink"];
@@ -36,6 +39,7 @@
         self.vimeoLink = [self getPropertyFromObject:object withName:(const uint8_t*)"vimeoLink"];
         self.weiboLink = [self getPropertyFromObject:object withName:(const uint8_t*)"weiboLink"];
         self.twitterLink = [self getPropertyFromObject:object withName:(const uint8_t*)"twitterLink"];
+        self.pinterestImageLink = [self getPropertyFromObject:object withName:(const uint8_t*)"pinterestImageLink"];
     }
     return self;
 }
@@ -64,6 +68,7 @@
 - (id) activityViewController:(UIActivityViewController *)activityViewController
           itemForActivityType:(NSString *)activityType
 {
+    NSLog(@"item for type %@", activityType);
     if (activityType == UIActivityTypeMessage)
     {
         return [NSURL URLWithString:self.messageLink];
@@ -96,9 +101,14 @@
     {
         return [NSURL URLWithString:self.twitterLink];
     }
+    if ([activityType isEqualToString: @"com.nshipster.activity.Mustachify"] && self.pinterestImageLink)
+    {
+        return [NSURL URLWithString:self.pinterestImageLink];
+    }
+    
     return nil;
 }
 
-- (id) activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController { return [NSURL URLWithString:@"http://www.google.com"]; }
+- (id) activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController { return [NSURL URLWithString:self.defaultLink]; }
 
 @end

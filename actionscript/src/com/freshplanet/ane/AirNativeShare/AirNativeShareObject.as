@@ -21,6 +21,7 @@ package com.freshplanet.ane.AirNativeShare
 		public var vimeoLink:String;
 		public var weiboLink:String;
 		public var twitterLink:String;
+		public var pinterestImageLink:String;
 
 		public var bitmapData:BitmapData = null;
 

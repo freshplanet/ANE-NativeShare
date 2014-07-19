@@ -11,6 +11,13 @@
 		5A9167E9196DEBF0008D19DD /* CustomText.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9167E6196DEBF0008D19DD /* CustomText.m */; };
 		5A9167EA196DEBF0008D19DD /* FPANEUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9167E8196DEBF0008D19DD /* FPANEUtils.m */; };
 		5A9167ED196E0334008D19DD /* CustomLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9167EC196E0334008D19DD /* CustomLink.m */; };
+		5A94437E197823CA003ADB8B /* instagram.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A94437A197822FA003ADB8B /* instagram.png */; };
+		5A94437F197823CD003ADB8B /* instagram@2x.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A94437B197822FA003ADB8B /* instagram@2x.png */; };
+		5A944380197823CF003ADB8B /* instagram~ipad.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A94437C197822FA003ADB8B /* instagram~ipad.png */; };
+		5A944381197823D2003ADB8B /* instagram~ipad@2x.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A94437D197822FA003ADB8B /* instagram~ipad@2x.png */; };
+		5A94439919782561003ADB8B /* CustomPinterestActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A94439819782561003ADB8B /* CustomPinterestActivity.m */; };
+		5A9443A119782C3B003ADB8B /* CustomInstagramActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A94439B19782C3B003ADB8B /* CustomInstagramActivity.m */; };
+		5AE0C54B1979DF7E008E8CFE /* Pinterest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE0C5481979DF5B008E8CFE /* Pinterest.framework */; };
 		FAD66E7515D2C21A00BAA656 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD66E7415D2C21A00BAA656 /* Foundation.framework */; };
 		FAD66EC315D2F62600BAA656 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD66EAC15D2F62600BAA656 /* UIKit.framework */; };
 /* End PBXBuildFile section */
@@ -22,6 +29,10 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				5A944381197823D2003ADB8B /* instagram~ipad@2x.png in CopyFiles */,
+				5A944380197823CF003ADB8B /* instagram~ipad.png in CopyFiles */,
+				5A94437F197823CD003ADB8B /* instagram@2x.png in CopyFiles */,
+				5A94437E197823CA003ADB8B /* instagram.png in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,6 +48,16 @@
 		5A9167E8196DEBF0008D19DD /* FPANEUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FPANEUtils.m; path = AirNativeShare/FPANEUtils.m; sourceTree = SOURCE_ROOT; };
 		5A9167EB196E0334008D19DD /* CustomLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomLink.h; path = AirNativeShare/CustomLink.h; sourceTree = SOURCE_ROOT; };
 		5A9167EC196E0334008D19DD /* CustomLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomLink.m; path = AirNativeShare/CustomLink.m; sourceTree = SOURCE_ROOT; };
+		5A94437A197822FA003ADB8B /* instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = instagram.png; path = AirNativeShare/instagram.png; sourceTree = SOURCE_ROOT; };
+		5A94437B197822FA003ADB8B /* instagram@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "instagram@2x.png"; path = "AirNativeShare/instagram@2x.png"; sourceTree = SOURCE_ROOT; };
+		5A94437C197822FA003ADB8B /* instagram~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "instagram~ipad.png"; path = "AirNativeShare/instagram~ipad.png"; sourceTree = SOURCE_ROOT; };
+		5A94437D197822FA003ADB8B /* instagram~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "instagram~ipad@2x.png"; path = "AirNativeShare/instagram~ipad@2x.png"; sourceTree = SOURCE_ROOT; };
+		5A94439719782561003ADB8B /* CustomPinterestActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomPinterestActivity.h; path = AirNativeShare/CustomPinterestActivity.h; sourceTree = SOURCE_ROOT; };
+		5A94439819782561003ADB8B /* CustomPinterestActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomPinterestActivity.m; path = AirNativeShare/CustomPinterestActivity.m; sourceTree = SOURCE_ROOT; };
+		5A94439A19782C3B003ADB8B /* CustomInstagramActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomInstagramActivity.h; path = AirNativeShare/CustomInstagramActivity.h; sourceTree = SOURCE_ROOT; };
+		5A94439B19782C3B003ADB8B /* CustomInstagramActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomInstagramActivity.m; path = AirNativeShare/CustomInstagramActivity.m; sourceTree = SOURCE_ROOT; };
+		5AE0C5481979DF5B008E8CFE /* Pinterest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pinterest.framework; sourceTree = "<group>"; };
+		5AE0C54A1979DF5B008E8CFE /* PinterestSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PinterestSDKResources.bundle; sourceTree = "<group>"; };
 		FAD66E7115D2C21A00BAA656 /* libAirNativeShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAirNativeShare.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAD66E7415D2C21A00BAA656 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FAD66E8515D2CA3400BAA656 /* FlashRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlashRuntimeExtensions.h; path = "/Applications/Adobe Flash Builder 4.6/sdks/4.6.0/include/FlashRuntimeExtensions.h"; sourceTree = "<absolute>"; };
@@ -48,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AE0C54B1979DF7E008E8CFE /* Pinterest.framework in Frameworks */,
 				FAD66E7515D2C21A00BAA656 /* Foundation.framework in Frameworks */,
 				FAD66EC315D2F62600BAA656 /* UIKit.framework in Frameworks */,
 			);
@@ -56,9 +78,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5AE0C5471979DF5B008E8CFE /* Pinterest.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				5AE0C5481979DF5B008E8CFE /* Pinterest.framework */,
+				5AE0C5491979DF5B008E8CFE /* Resources */,
+			);
+			path = Pinterest.embeddedframework;
+			sourceTree = "<group>";
+		};
+		5AE0C5491979DF5B008E8CFE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5AE0C54A1979DF5B008E8CFE /* PinterestSDKResources.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		FAD66E6615D2C21A00BAA656 = {
 			isa = PBXGroup;
 			children = (
+				5AE0C5471979DF5B008E8CFE /* Pinterest.embeddedframework */,
 				FAD66E7615D2C21A00BAA656 /* AirNativeShare */,
 				FAD66E7315D2C21A00BAA656 /* Frameworks */,
 				FAD66E7215D2C21A00BAA656 /* Products */,
@@ -86,6 +126,14 @@
 		FAD66E7615D2C21A00BAA656 /* AirNativeShare */ = {
 			isa = PBXGroup;
 			children = (
+				5A94439719782561003ADB8B /* CustomPinterestActivity.h */,
+				5A94439819782561003ADB8B /* CustomPinterestActivity.m */,
+				5A94439A19782C3B003ADB8B /* CustomInstagramActivity.h */,
+				5A94439B19782C3B003ADB8B /* CustomInstagramActivity.m */,
+				5A94437A197822FA003ADB8B /* instagram.png */,
+				5A94437B197822FA003ADB8B /* instagram@2x.png */,
+				5A94437C197822FA003ADB8B /* instagram~ipad.png */,
+				5A94437D197822FA003ADB8B /* instagram~ipad@2x.png */,
 				5A9167E5196DEBF0008D19DD /* CustomText.h */,
 				5A9167E6196DEBF0008D19DD /* CustomText.m */,
 				5A9167EB196E0334008D19DD /* CustomLink.h */,
@@ -159,8 +207,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A9443A119782C3B003ADB8B /* CustomInstagramActivity.m in Sources */,
 				5A9167ED196E0334008D19DD /* CustomLink.m in Sources */,
 				5A9167EA196DEBF0008D19DD /* FPANEUtils.m in Sources */,
+				5A94439919782561003ADB8B /* CustomPinterestActivity.m in Sources */,
 				5A3A8A90196DBCE400B2B4C1 /* AirNativeShare.m in Sources */,
 				5A9167E9196DEBF0008D19DD /* CustomText.m in Sources */,
 			);
@@ -253,6 +303,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/AirBurstly.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pinterest.embeddedframework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AirNativeShare/AirNativeShare-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (
@@ -273,6 +328,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/AirBurstly.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pinterest.embeddedframework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AirNativeShare/AirNativeShare-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (

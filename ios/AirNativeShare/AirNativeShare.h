@@ -19,6 +19,15 @@
 #import "FlashRuntimeExtensions.h"
 
 @interface AirNativeShare : NSObject
+{
+
+}
+
++(id) sharedInstance;
+
+
+@property (strong) UIDocumentInteractionController *documentController;
+
 @end
 
 

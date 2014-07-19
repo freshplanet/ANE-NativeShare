@@ -12,6 +12,8 @@
 	<dict>
 		<key>4695C1A4-687C-42A1-9547-48FE2B90CAE3</key>
 		<string>ssh://github.com/freshplanet/ANE-NativeShare.git</string>
+		<key>B36B6056-BFB8-4BF5-BC83-21090A91D2A5</key>
+		<string>ssh://github.com/freshplanet/ANE-Pinterest.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>ios/AirNativeShare.xcodeproj/project.xcworkspace</string>
@@ -19,6 +21,8 @@
 	<dict>
 		<key>4695C1A4-687C-42A1-9547-48FE2B90CAE3</key>
 		<string>../../..</string>
+		<key>B36B6056-BFB8-4BF5-BC83-21090A91D2A5</key>
+		<string>../../../../ANE-Pinterest</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>ssh://github.com/freshplanet/ANE-NativeShare.git</string>
@@ -35,6 +39,14 @@
 			<string>4695C1A4-687C-42A1-9547-48FE2B90CAE3</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ANE-Native-Share</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B36B6056-BFB8-4BF5-BC83-21090A91D2A5</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ANE-Pinterest</string>
 		</dict>
 	</array>
 </dict>

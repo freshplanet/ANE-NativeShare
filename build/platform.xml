@@ -1,5 +1,8 @@
-<platform xmlns="http://ns.adobe.com/air/extension/3.1">
-    <sdkVersion>6.0</sdkVersion>
+<platform xmlns="http://ns.adobe.com/air/extension/3.5">
+    <sdkVersion>7.0</sdkVersion>
     <linkerOptions>
-    </linkerOptions> 
+    </linkerOptions>
+    <packagedDependencies>
+        <packagedDependency>Pinterest.framework</packagedDependency>
+    </packagedDependencies>
 </platform>

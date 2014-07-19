@@ -32,10 +32,26 @@ package com.freshplanet.ane.AirNativeShare
 		// 																						 //
 		// --------------------------------------------------------------------------------------//
 
+
+		private static var isInitialized:Boolean = false;
+		private static var _isSupportedOnIOS:Boolean = false;
+
 		/** AirAlert is supported on iOS and Android devices. */
-		public static function get isSupported() : Boolean
+		public function get isSupported() : Boolean
 		{
-			return Capabilities.manufacturer.indexOf("iOS") != -1;
+			if ( Capabilities.manufacturer.indexOf("iOS") != -1 )
+			{
+				return false;
+			}
+			if (isInitialized)
+			{
+				return _isSupportedOnIOS;
+			} else
+			{
+				_isSupportedOnIOS = _context.call("AirNativeShareIsSupported");
+				return _isSupportedOnIOS;
+			}
+
 		}
 
 		public function AirNativeShare()
@@ -63,6 +79,7 @@ package com.freshplanet.ane.AirNativeShare
 			return _instance ? _instance : new AirNativeShare();
 		}
 
+
 		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null ) : void
 		{
 			if (!isSupported) return;
@@ -73,6 +90,19 @@ package com.freshplanet.ane.AirNativeShare
 			} else
 			{
 				_context.call("AirNativeShareShowShare", shareObject);
+			}
+		}
+
+		public function initForPinterest(pinterestClientId:String, pinterestSiteUrl:String, pinterestClientSuffix:String = null):void
+		{
+			if (!isSupported) return;
+
+			if (pinterestClientSuffix)
+			{
+				_context.call("AirNativeShareInitPinterest", pinterestClientId, pinterestSiteUrl, pinterestClientSuffix);
+			} else
+			{
+				_context.call("AirNativeShareInitPinterest", pinterestClientId, pinterestSiteUrl);
 			}
 
 		}
@@ -90,23 +120,9 @@ package com.freshplanet.ane.AirNativeShare
 
 		private var _context : ExtensionContext;
 
-		private var _callback1 : Function = null;
-		private var _callback2 : Function = null;
-
 		private function onStatus( event : StatusEvent ) : void
 		{
-			if (event.code == "CLICK")
-			{
-				var callback:Function = null;
-
-				if (event.level == "0") callback = _callback1;
-				else if (event.level == "1") callback = _callback2;
-
-				_callback1 = null;
-				_callback2 = null;
-
-				if (callback != null) callback();
-			}
+			// TODO, track completion.
 		}
 	}
 }
