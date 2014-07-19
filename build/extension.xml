@@ -28,13 +28,9 @@
             </applicationDeployment>
         </platform>
 
-<!--        <platform name="Android-ARM"> 
-            <applicationDeployment> 
-                <nativeLibrary>libAirAlert.jar</nativeLibrary> 
-                <initializer>com.freshplanet.alert.Extension</initializer> 
-                <finalizer>com.freshplanet.alert.Extension</finalizer> 
-            </applicationDeployment>
-        </platform> -->
+        <platform name="Android-ARM">
+            <applicationDeployment/>
+        </platform>
 
         <platform name="default"> 
             <applicationDeployment/> 

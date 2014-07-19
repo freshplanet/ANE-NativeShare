@@ -22,6 +22,10 @@
 #import "CustomPinterestActivity.h"
 #import "CustomInstagramActivity.h"
 
+
+FREContext myAirNativeShareCtx = nil;
+
+
 @implementation AirNativeShare
 
 @synthesize documentController;
@@ -187,6 +191,49 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
 
         }
         
+        
+        if (completed)
+        {
+            NSString *shareType = @"Unknown";
+            
+            if (activityType == UIActivityTypeMessage)
+            {
+                shareType = @"SMS";
+            }
+            if (activityType == UIActivityTypeMail)
+            {
+                shareType = @"Mail";
+            }
+            if (activityType == UIActivityTypePostToFacebook)
+            {
+                shareType = @"Facebook";
+            }
+            if (activityType == UIActivityTypePostToFlickr)
+            {
+                shareType = @"Flickr";
+            }
+            if (activityType == UIActivityTypePostToVimeo)
+            {
+                shareType = @"Vimeo";
+            }
+            if (activityType == UIActivityTypePostToTencentWeibo)
+            {
+                shareType = @"TencentWeibo";
+            }
+            if (activityType == UIActivityTypePostToWeibo)
+            {
+                shareType = @"Weibo";
+            }
+            if (activityType == UIActivityTypePostToTwitter)
+            {
+                shareType = @"Twitter";
+            }
+
+            
+            FPANE_DispatchEventWithInfo(myAirNativeShareCtx, @"NATIVE_SHARE_SUCCESS", shareType);
+        }
+        
+        
     }];
     
     
@@ -259,6 +306,9 @@ void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FRE
     func[2].function = &AirNativeShareIsSupported;
 
     *functionsToSet = func;
+    
+    myAirNativeShareCtx = ctx;
+
 }
 
 void AirNativeShareContextFinalizer(FREContext ctx) { }

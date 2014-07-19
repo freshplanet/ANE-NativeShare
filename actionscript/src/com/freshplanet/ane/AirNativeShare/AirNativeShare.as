@@ -122,7 +122,10 @@ package com.freshplanet.ane.AirNativeShare
 
 		private function onStatus( event : StatusEvent ) : void
 		{
-			// TODO, track completion.
+			if (event.code == AirNativeShareEvent.SHARED)
+			{
+				this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.SHARED, event.level));
+			}
 		}
 	}
 }

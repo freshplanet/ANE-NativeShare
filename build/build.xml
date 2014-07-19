@@ -93,12 +93,12 @@
             <arg value="../build/extension.xml"/>
             <arg line="-swc swc/${name}.swc"/>
             <arg line="-platform iPhone-ARM -platformoptions ../build/platform.xml Pinterest.framework -C ios/ ."/>
-            <!--<arg line="-platform Android-ARM -C android/ ."/> -->
+            <arg line="-platform Android-ARM -C android/ ."/>
             <arg line="-platform default -C default/ ."/>
         </exec>
 
         <move file="../temp/${name}.ane" todir="../bin"/>
-        <!--<delete dir="../temp"/>-->
+        <delete dir="../temp"/>
         <copy file="../bin/${name}.ane" todir="${ane.folder}" overwrite="true"/>
     </target>
 
