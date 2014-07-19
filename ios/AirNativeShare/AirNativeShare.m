@@ -190,7 +190,21 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
     }];
     
     
-    [rootViewController presentViewController:activityController animated:YES completion:nil];
+    
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+
+        UIPopoverController *popup = [[UIPopoverController alloc] initWithContentViewController:activityController];
+        UIView *view = rootViewController.view;
+        [popup presentPopoverFromRect:CGRectMake(view.frame.size.width/2 - 50, view.frame.size.height/2 - 50, 100, 100) inView:view permittedArrowDirections:0 animated:YES];
+
+        
+    } else {
+        // present modally
+        [rootViewController presentViewController:activityController animated:YES completion:nil];
+    }
+
+    
     
     return nil;
 }
@@ -213,7 +227,9 @@ DEFINE_ANE_FUNCTION(AirNativeShareInitPinterest)
 
 DEFINE_ANE_FUNCTION(AirNativeShareIsSupported)
 {
+    NSLog(@"check if supported");
     BOOL isSupported = NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1;
+    NSLog(@"is supported");
     return FPANE_BOOLToFREObject(isSupported);
 }
 
@@ -223,7 +239,7 @@ DEFINE_ANE_FUNCTION(AirNativeShareIsSupported)
 void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
     // Register the links btwn AS3 and ObjC. (dont forget to modify the nbFuntionsToLink integer if you are adding/removing functions)
-    NSInteger nbFuntionsToLink = 4;
+    NSInteger nbFuntionsToLink = 3;
     *numFunctionsToTest = nbFuntionsToLink;
     
     FRENamedFunction* func = (FRENamedFunction*) malloc(sizeof(FRENamedFunction) * nbFuntionsToLink);

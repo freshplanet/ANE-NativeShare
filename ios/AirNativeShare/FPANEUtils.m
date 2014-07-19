@@ -132,8 +132,11 @@ double FPANE_FREObjectToDouble(FREObject object)
 FREObject FPANE_BOOLToFREObject(BOOL boolean)
 {
     FREObject result;
-    FRENewObjectFromBool(boolean, &result);
-    return result;
+    if (FRENewObjectFromBool(boolean, &result) == FRE_OK)
+    {
+        return result;
+    }
+    return nil;
 }
 
 FREObject FPANE_IntToFREObject(NSInteger i)
