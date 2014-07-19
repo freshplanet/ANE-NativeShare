@@ -10,8 +10,5 @@
 
 @interface CustomInstagramActivity : UIActivity <UIDocumentInteractionControllerDelegate>
 
-//extern NSString *HIPInstagramActivityType;
-//extern const NSString *HIPInstagramActivityType;
-
 
 @end

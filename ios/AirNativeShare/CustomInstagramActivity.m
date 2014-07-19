@@ -10,7 +10,7 @@
 
 @implementation CustomInstagramActivity
 
-static NSString * const HIPInstagramActivityType = @"com.nshipster.activity.Instagram";
+static NSString * const FPInstagramActivityType = @"com.freshplanet.activity.CustomInstagramActivity";
 
 
 + (UIActivityCategory)activityCategory {
@@ -18,7 +18,7 @@ static NSString * const HIPInstagramActivityType = @"com.nshipster.activity.Inst
 }
 
 - (NSString *)activityType {
-    return HIPInstagramActivityType;
+    return FPInstagramActivityType;
 }
 
 - (NSString *)activityTitle {

@@ -12,7 +12,7 @@
 
 @synthesize imageUrl, sourceUrl, description;
 
-static NSString * const HIPMustachifyActivityType = @"com.nshipster.activity.Mustachify";
+static NSString * const FPPinterestActivityType = @"com.freshplanet.activity.CustomPinterestActivity";
 static NSString* pinterestClientId = nil;
 static NSString* pinterestSuffix = nil;
 static NSString* pinterestSiteUrl = nil;
@@ -39,7 +39,7 @@ static NSString* pinterestSiteUrl = nil;
 }
 
 - (NSString *)activityType {
-    return HIPMustachifyActivityType;
+    return FPPinterestActivityType;
 }
 
 - (NSString *)activityTitle {

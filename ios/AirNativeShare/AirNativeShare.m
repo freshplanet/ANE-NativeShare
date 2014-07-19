@@ -160,7 +160,7 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
     
     [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
         
-        if (completed && [activityType isEqualToString:@"com.nshipster.activity.Instagram"])
+        if (completed && [activityType isEqualToString:@"com.freshplanet.activity.CustomInstagramActivity"])
         {
             
             UIDocumentInteractionController * documentController;

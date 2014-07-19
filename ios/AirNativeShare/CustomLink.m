@@ -101,7 +101,7 @@
     {
         return [NSURL URLWithString:self.twitterLink];
     }
-    if ([activityType isEqualToString: @"com.nshipster.activity.Mustachify"] && self.pinterestImageLink)
+    if ([activityType isEqualToString: @"com.freshplanet.activity.CustomPinterestActivity"] && self.pinterestImageLink)
     {
         return [NSURL URLWithString:self.pinterestImageLink];
     }
