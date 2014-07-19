@@ -29,7 +29,11 @@
         </platform>
 
         <platform name="Android-ARM">
-            <applicationDeployment/>
+            <applicationDeployment>
+                <nativeLibrary>libAirNativeShare.jar</nativeLibrary>
+                <initializer>com.freshplanet.nativeShare.Extension</initializer>
+                <finalizer>com.freshplanet.nativeShare.Extension</finalizer>
+            </applicationDeployment>
         </platform>
 
         <platform name="default"> 
