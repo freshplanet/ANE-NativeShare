@@ -21,7 +21,7 @@
 #import "CustomLink.h"
 #import "CustomPinterestActivity.h"
 #import "CustomInstagramActivity.h"
-
+#import "CustomImage.h"
 
 FREContext myAirNativeShareCtx = nil;
 
@@ -110,8 +110,20 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
                 imagePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"/insta.igo"];
                 [imageData writeToFile:imagePath atomically:YES];
 
+                if (argc > 3)
+                {
+                    NSString * imageUrl = FPANE_FREObjectToNSString(argv[2]);
+                    NSString * sourceUrl = FPANE_FREObjectToNSString(argv[3]);
+                    NSLog(@"image url %@", imageUrl);
+                    CustomImage* myImage = [[CustomImage alloc] initWithContentsOfFile:imagePath];
+                    myImage.imageUrl = imageUrl;
+                    myImage.sourceUrl = sourceUrl;
+                    image = myImage;
+                } else
+                {
+                    image = [UIImage imageWithContentsOfFile:imagePath];
+                }
                 
-                image = [UIImage imageWithContentsOfFile:imagePath];
             }
         } else
         {
@@ -164,7 +176,7 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
     
     [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
         
-        if (completed && [activityType isEqualToString:@"com.freshplanet.activity.CustomInstagramActivity"])
+        if (completed && [activityType isEqualToString:FPInstagramActivityType])
         {
             
             UIDocumentInteractionController * documentController;
@@ -177,7 +189,7 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
             documentController.UTI = @"com.instagram.exclusivegram";
             if (caption != nil)
             {
-                documentController.annotation = [NSDictionary dictionaryWithObject:caption forKey:@"InstagramCaption"];
+                documentController.annotation = [NSDictionary dictionaryWithObject:caption.twitterText forKey:@"InstagramCaption"];
             }
             
             // Present the tweet composition view controller modally.
@@ -188,8 +200,8 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
             UIView *rootView = [[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
             
             [documentController presentOpenInMenuFromRect:CGRectMake(0, 0, 100, 100) inView:rootView animated:YES];
-
         }
+        
         
         
         if (completed)
@@ -228,6 +240,14 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
             {
                 shareType = @"Twitter";
             }
+            if ([activityType isEqualToString:FPInstagramActivityType])
+            {
+                shareType = @"Instagram";
+            }
+            if ([activityType isEqualToString:FPPinterestActivityType])
+            {
+                shareType = @"Pinterest";
+            }
 
             
             FPANE_DispatchEventWithInfo(myAirNativeShareCtx, @"NATIVE_SHARE_SUCCESS", shareType);
@@ -261,13 +281,12 @@ DEFINE_ANE_FUNCTION(AirNativeShareInitPinterest)
 {
     NSString * pinterestClientId = FPANE_FREObjectToNSString(argv[0]);
     NSString * pinterestSuffix = nil;
-    NSString * pinterestSiteUrl = FPANE_FREObjectToNSString(argv[1]);
-    if (argc > 2)
+    if (argc > 1)
     {
-        pinterestSuffix = FPANE_FREObjectToNSString(argv[2]);
+        pinterestSuffix = FPANE_FREObjectToNSString(argv[1]);
     }
     
-    [CustomPinterestActivity initWithClientId:pinterestClientId suffix:pinterestSuffix andBaseSiteUrl:pinterestSiteUrl];
+    [CustomPinterestActivity initWithClientId:pinterestClientId suffix:pinterestSuffix];
 
     return nil;
 }

@@ -80,29 +80,35 @@ package com.freshplanet.ane.AirNativeShare
 		}
 
 
-		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null ) : void
+		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null, bitmapUrl:String = null, sourceUrl:String = null ) : void
 		{
 			if (!isSupported) return;
 
 			if (bitmapData)
 			{
-				_context.call("AirNativeShareShowShare", shareObject, bitmapData);
+				if (bitmapUrl)
+				{
+					_context.call("AirNativeShareShowShare", shareObject, bitmapData, bitmapUrl, sourceUrl);
+				} else
+				{
+					_context.call("AirNativeShareShowShare", shareObject, bitmapData);
+				}
 			} else
 			{
 				_context.call("AirNativeShareShowShare", shareObject);
 			}
 		}
 
-		public function initForPinterest(pinterestClientId:String, pinterestSiteUrl:String, pinterestClientSuffix:String = null):void
+		public function initForPinterest(pinterestClientId:String, pinterestClientSuffix:String = null):void
 		{
 			if (!isSupported) return;
 
 			if (pinterestClientSuffix)
 			{
-				_context.call("AirNativeShareInitPinterest", pinterestClientId, pinterestSiteUrl, pinterestClientSuffix);
+				_context.call("AirNativeShareInitPinterest", pinterestClientId, pinterestClientSuffix);
 			} else
 			{
-				_context.call("AirNativeShareInitPinterest", pinterestClientId, pinterestSiteUrl);
+				_context.call("AirNativeShareInitPinterest", pinterestClientId);
 			}
 
 		}

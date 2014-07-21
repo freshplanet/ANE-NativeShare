@@ -7,6 +7,9 @@
 //
 
 #import "CustomText.h"
+#import "CustomPinterestActivity.h"
+#import "CustomInstagramActivity.h"
+
 @interface CustomText ()
 {
 }
@@ -16,11 +19,11 @@
 @property(nonatomic, retain) NSString *flickrText;
 @property(nonatomic, retain) NSString *vimeoText;
 @property(nonatomic, retain) NSString *weiboText;
-@property(nonatomic, retain) NSString *twitterText;
 
 @end
 
 @implementation CustomText
+@synthesize twitterText;
 
 - (id) initWithFREObject:(FREObject)object;
 {
@@ -93,7 +96,17 @@
     {
         return self.twitterText;
     }
-
+    
+    if ([activityType isEqualToString:FPPinterestActivityType])
+    {
+        return self.twitterText;
+    }
+    
+    if ([activityType isEqualToString:FPInstagramActivityType])
+    {
+        return self.twitterText;
+    }
+    
     return @"";
 }
 

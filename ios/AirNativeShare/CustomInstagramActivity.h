@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString * const FPInstagramActivityType;
+
 @interface CustomInstagramActivity : UIActivity <UIDocumentInteractionControllerDelegate>
 
 

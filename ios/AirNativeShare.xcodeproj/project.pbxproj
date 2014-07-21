@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A1B11B3197D76B400C0BAA8 /* CustomImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A1B11B2197D76B400C0BAA8 /* CustomImage.m */; };
 		5A3A8A90196DBCE400B2B4C1 /* AirNativeShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3A8A8F196DBCE400B2B4C1 /* AirNativeShare.m */; };
 		5A9167E9196DEBF0008D19DD /* CustomText.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9167E6196DEBF0008D19DD /* CustomText.m */; };
 		5A9167EA196DEBF0008D19DD /* FPANEUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9167E8196DEBF0008D19DD /* FPANEUtils.m */; };
@@ -39,6 +40,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5A1B11B1197D76B400C0BAA8 /* CustomImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomImage.h; path = AirNativeShare/CustomImage.h; sourceTree = SOURCE_ROOT; };
+		5A1B11B2197D76B400C0BAA8 /* CustomImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomImage.m; path = AirNativeShare/CustomImage.m; sourceTree = SOURCE_ROOT; };
 		5A3A8A8D196DBCE400B2B4C1 /* AirNativeShare-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AirNativeShare-Prefix.pch"; path = "AirNativeShare/AirNativeShare-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		5A3A8A8E196DBCE400B2B4C1 /* AirNativeShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AirNativeShare.h; path = AirNativeShare/AirNativeShare.h; sourceTree = SOURCE_ROOT; };
 		5A3A8A8F196DBCE400B2B4C1 /* AirNativeShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AirNativeShare.m; path = AirNativeShare/AirNativeShare.m; sourceTree = SOURCE_ROOT; };
@@ -136,6 +139,8 @@
 				5A94437D197822FA003ADB8B /* instagram~ipad@2x.png */,
 				5A9167E5196DEBF0008D19DD /* CustomText.h */,
 				5A9167E6196DEBF0008D19DD /* CustomText.m */,
+				5A1B11B1197D76B400C0BAA8 /* CustomImage.h */,
+				5A1B11B2197D76B400C0BAA8 /* CustomImage.m */,
 				5A9167EB196E0334008D19DD /* CustomLink.h */,
 				5A9167EC196E0334008D19DD /* CustomLink.m */,
 				5A9167E7196DEBF0008D19DD /* FPANEUtils.h */,
@@ -211,6 +216,7 @@
 				5A9167ED196E0334008D19DD /* CustomLink.m in Sources */,
 				5A9167EA196DEBF0008D19DD /* FPANEUtils.m in Sources */,
 				5A94439919782561003ADB8B /* CustomPinterestActivity.m in Sources */,
+				5A1B11B3197D76B400C0BAA8 /* CustomImage.m in Sources */,
 				5A3A8A90196DBCE400B2B4C1 /* AirNativeShare.m in Sources */,
 				5A9167E9196DEBF0008D19DD /* CustomText.m in Sources */,
 			);

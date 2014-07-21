@@ -9,12 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <Pinterest/Pinterest.h>
 
+extern NSString * const FPPinterestActivityType;
+
 @interface CustomPinterestActivity : UIActivity
-{
-}
 
-+(void)initWithClientId:(NSString*)clientId suffix:(NSString*)suffixId andBaseSiteUrl:(NSString*)siteUrl;
-
++(void)initWithClientId:(NSString*)clientId suffix:(NSString*)suffixId;
 
 @property(nonatomic, retain) NSURL *imageUrl;
 @property(nonatomic, retain) NSURL *sourceUrl;

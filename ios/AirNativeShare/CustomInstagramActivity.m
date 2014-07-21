@@ -8,9 +8,9 @@
 
 #import "CustomInstagramActivity.h"
 
-@implementation CustomInstagramActivity
+NSString * const FPInstagramActivityType = @"com.freshplanet.activity.CustomInstagramActivity";
 
-static NSString * const FPInstagramActivityType = @"com.freshplanet.activity.CustomInstagramActivity";
+@implementation CustomInstagramActivity
 
 
 + (UIActivityCategory)activityCategory {
