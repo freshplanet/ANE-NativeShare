@@ -49,7 +49,7 @@ static NSString* pinterestSuffix = nil;
 }
 
 - (UIImage *)activityImage {
-    return [UIImage imageNamed:@"instagram"];
+    return [UIImage imageNamed:@"pinterest"];
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {    

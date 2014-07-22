@@ -99,14 +99,15 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
                 }
                 
                 CGColorRenderingIntent  renderingIntent     = kCGRenderingIntentDefault;
-                CGImageRef imageRef           = CGImageCreate(bitmapData.width, bitmapData.height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
+                CGImageRef imageRef           = CGImageCreate(bitmapData.width, bitmapData.height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, YES, renderingIntent);
                 
                 // make UIImage from CGImage
                 image = [UIImage imageWithCGImage:imageRef];
                 
                 FREReleaseBitmapData(argv[1]);
                 
-                NSData *imageData= UIImageJPEGRepresentation(image,0.0);
+                NSData *imageData= UIImagePNGRepresentation(image);
+//                (<#UIImage *image#>)(image,0.0);
                 imagePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"/insta.igo"];
                 [imageData writeToFile:imagePath atomically:YES];
 
