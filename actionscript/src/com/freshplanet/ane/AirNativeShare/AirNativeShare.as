@@ -80,13 +80,13 @@ package com.freshplanet.ane.AirNativeShare
 		}
 
 
-		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null ) : void
+		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null, usePNG:Boolean = false, quality:Number = 0.0 ) : void
 		{
 			if (!isSupported) return;
 
 			if (bitmapData)
 			{
-				_context.call("AirNativeShareShowShare", shareObject, bitmapData);
+				_context.call("AirNativeShareShowShare", shareObject, bitmapData, usePNG, quality);
 			} else
 			{
 				_context.call("AirNativeShareShowShare", shareObject);

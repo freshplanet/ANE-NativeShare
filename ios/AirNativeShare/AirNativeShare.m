@@ -106,9 +106,33 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
                 
                 FREReleaseBitmapData(argv[1]);
                 
-                NSData *imageData= UIImageJPEGRepresentation(image,0.0);
+                uint32_t usePNG = false;
+                double_t quality = 1.0;
+                if(argc > 2) {
+                    if(FREGetObjectAsBool(argv[2], &usePNG) != FRE_OK) {
+                        NSLog(@"Couldn't get bool usePNG");
+                        usePNG = false;
+                    }
+                    if(!usePNG && argc > 3) {
+                        if (FREGetObjectAsDouble(argv[3], &quality) != FRE_OK) {
+                            NSLog(@"Couldn't get double 'quality'");
+                        }
+                    }
+                }
+                
+                
+                NSData *imageData;
+                if(usePNG) {
+                    NSLog(@"using PNG");
+                    imageData = UIImagePNGRepresentation(image);
+                } else {
+                    NSLog(@"using JPEG");
+                    imageData= UIImageJPEGRepresentation(image, quality);
+                }
+                
                 imagePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"/insta.igo"];
                 [imageData writeToFile:imagePath atomically:YES];
+                
 
                 
                 image = [UIImage imageWithContentsOfFile:imagePath];
