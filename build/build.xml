@@ -98,7 +98,7 @@
         </exec>
 
         <move file="../temp/${name}.ane" todir="../bin"/>
-        <delete dir="../temp"/>
+        <!--<delete dir="../temp"/>-->
         <copy file="../bin/${name}.ane" todir="${ane.folder}" overwrite="true"/>
     </target>
 

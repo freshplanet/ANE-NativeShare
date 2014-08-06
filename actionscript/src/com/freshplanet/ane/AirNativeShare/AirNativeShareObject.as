@@ -4,6 +4,7 @@ package com.freshplanet.ane.AirNativeShare
 
 	public class AirNativeShareObject
 	{
+
 		public var messageText:String;
 		public var mailText:String;
 		public var facebookText:String;
@@ -12,6 +13,7 @@ package com.freshplanet.ane.AirNativeShare
 		public var weiboText:String;
 		public var twitterText:String;
 
+		public var hasDefaultLink:Boolean;
 
 		public var defaultLink:String = null;
 		public var messageLink:String;

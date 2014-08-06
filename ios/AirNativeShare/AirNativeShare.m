@@ -59,11 +59,18 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
         FREObject   exception;
         uint32_t    string1Length;
         const uint8_t *string1;
-        if (FREGetObjectProperty(argv[0], (const uint8_t*)"defaultLink", &propertyValue, &exception) == FRE_OK)
+        
+        if (FREGetObjectProperty(argv[0], (const uint8_t*)"hasDefaultLink", &propertyValue, &exception) == FRE_OK)
         {
-            NSLog(@"got link");
-            FREGetObjectAsUTF8(propertyValue, &string1Length, &string1);
-            link = [[CustomLink alloc] initWithFREObject:argv[0] andURLPath:[NSString stringWithUTF8String:(char*)string1]];
+            NSLog(@"checking link");
+            if (FPANE_FREObjectToBool(propertyValue))
+            {
+                if (FREGetObjectProperty(argv[0], (const uint8_t*)"defaultLink", &propertyValue, &exception) == FRE_OK)
+                {
+                    FREGetObjectAsUTF8(propertyValue, &string1Length, &string1);
+                    link = [[CustomLink alloc] initWithFREObject:argv[0] andURLPath:[NSString stringWithUTF8String:(char*)string1]];
+                }
+            }
         } else
         {
             NSLog(@"couldn't get link");
