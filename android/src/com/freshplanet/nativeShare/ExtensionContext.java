@@ -68,30 +68,24 @@ public class ExtensionContext extends FREContext
 	private FREFunction showShare = new FREFunction() {
 		@Override
 		public FREObject call(FREContext context, FREObject[] args) {
-			Extension.log( "native show Share start");
+			Extension.log( "Native show Share start");
 
 			String message = null;
+			String link = null;
 			Bitmap bitmap = null;
 
 			try {
 
-				Extension.log( "getting parameters");
 				FREObject freShareObject = args[0];
 				message = freShareObject.getProperty("messageText").getAsString();
-				String link = freShareObject.getProperty("defaultLink").getAsString();
-				if( link != null )
-					message = message + " - " + link;
+				link = freShareObject.getProperty("defaultLink").getAsString();
 
 				if( args.length > 1 ) {
 
 					Extension.log( "getting bitmap");
-
 					FREBitmapData freBitmapData = (FREBitmapData) args[1];
-					int width = freBitmapData.getWidth();
-					int height = freBitmapData.getHeight();
-					bitmap		    = Bitmap.createBitmap( width, height, Bitmap.Config.ARGB_8888 );
-					Canvas canvas	= new Canvas(bitmap);
-					Paint paint		= new Paint();
+
+					Paint paint = new Paint();
 					float[] bgrToRgbColorTransform  =
 							{
 									0,  0,  1f, 0,  0,
@@ -103,13 +97,15 @@ public class ExtensionContext extends FREContext
 					ColorMatrixColorFilter colorFilter	= new ColorMatrixColorFilter(colorMatrix);
 					paint.setColorFilter(colorFilter);
 
-					Extension.log( "bitmap acquire");
 					freBitmapData.acquire();
+					int width = freBitmapData.getWidth();
+					int height = freBitmapData.getHeight();
+					bitmap = Bitmap.createBitmap( width, height, Bitmap.Config.ARGB_8888 );
 					bitmap.copyPixelsFromBuffer(freBitmapData.getBits());
 					freBitmapData.release();
-					Extension.log( "bitmap released");
 
 					// Convert the bitmap from BGRA to RGBA.
+					Canvas canvas	= new Canvas(bitmap);
 					canvas.drawBitmap(bitmap, 0, 0, paint);
 
 				}
@@ -125,38 +121,39 @@ public class ExtensionContext extends FREContext
 				e.printStackTrace();
 			} catch (FRETypeMismatchException e) {
 				e.printStackTrace();
-			} finally {
-				Extension.log( "got parameters" );
 			}
-
-			// ------------------------------------------------------------ NO trace beyond this point
 
 			Extension.log( message );
 
 			if( message == null ) {
-
 				Extension.log( "no message to send" );
-
 				return null;
-
 			}
 
 			// ------------------------
 			// Prepare Intent
-
-			Extension.log( "preparing intent" );
 			Intent sharingIntent = new Intent( Intent.ACTION_SEND );
+			sharingIntent.putExtra( Intent.EXTRA_TITLE, message );
+			sharingIntent.putExtra( Intent.EXTRA_SUBJECT, message );
+			if( link != null )
+				message = message + " - " + link;
 			sharingIntent.putExtra( Intent.EXTRA_TEXT, message );
-			if( bitmap == null ){
+			if( bitmap != null ){
 				Extension.log( "we have image" );
-				String pathOfBmp = MediaStore.Images.Media.insertImage( getActivity().getContentResolver(), bitmap, "share_image", null );
-				Uri bmpUri = Uri.parse(pathOfBmp);
-				sharingIntent.setType( "image/png" );
-				sharingIntent.putExtra( Intent.EXTRA_STREAM, bmpUri );
+				try {
+					String pathOfBmp = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, "air_native_share_media", "");
+					Extension.log( pathOfBmp );
+					Uri bmpUri = Uri.parse(pathOfBmp);
+					sharingIntent.setType( "image/*" );
+					sharingIntent.putExtra( Intent.EXTRA_STREAM, bmpUri );
+				} catch( Exception e ) {
+					Extension.log( e.getMessage() );
+				}
+			} else {
+				sharingIntent.setType("text/plain");
 			}
 
 			Extension.log( "sending" );
-
 			getActivity().startActivity( Intent.createChooser( sharingIntent, "Share with" ) );
 
 			return null;
