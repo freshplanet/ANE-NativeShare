@@ -10,6 +10,6 @@
 #import "FlashRuntimeExtensions.h"
 
 @interface CustomText : UIActivityItemProvider <UIActivityItemSource>
-
+@property(nonatomic, retain) NSString *twitterText;
 - (id) initWithFREObject:(FREObject)object;
 @end

@@ -60,7 +60,7 @@ public class ExtensionContext extends FREContext
 
 	}
 
-	private void log(String event){
+	private void log(String event) {
 		Log.i( "[AirNativeShare]", event );
 		dispatchStatusEventAsync("log", event);
 	}
@@ -68,7 +68,7 @@ public class ExtensionContext extends FREContext
 	private FREFunction showShare = new FREFunction() {
 		@Override
 		public FREObject call(FREContext context, FREObject[] args) {
-			Extension.log( "Native show Share start");
+			Extension.log( "Native show Share start v3");
 
 			String message = null;
 			String link = null;
@@ -77,8 +77,51 @@ public class ExtensionContext extends FREContext
 			try {
 
 				FREObject freShareObject = args[0];
-				message = freShareObject.getProperty("messageText").getAsString();
-				link = freShareObject.getProperty("defaultLink").getAsString();
+				try {
+					message = freShareObject.getProperty("messageText").getAsString();
+					Extension.log( "messageText obtained");
+				} catch (FREASErrorException e) {
+					e.printStackTrace();
+					Extension.log( "messageText error");
+				} catch (FREInvalidObjectException e) {
+					e.printStackTrace();
+					Extension.log( "messageText error");
+				} catch (FREWrongThreadException e) {
+					e.printStackTrace();
+					Extension.log( "messageText error");
+				} catch (FRENoSuchNameException e) {
+					e.printStackTrace();
+					Extension.log( "messageText error");
+				} catch (FRETypeMismatchException e) {
+					e.printStackTrace();
+					Extension.log( "messageText error");
+				} catch (Exception e) {
+					e.printStackTrace();
+					Extension.log( "messageText error");
+				}
+				
+				try {
+					link = freShareObject.getProperty("defaultLink").getAsString();
+					Extension.log( "defaultLink obtained");
+				} catch (FREASErrorException e) {
+					e.printStackTrace();
+					Extension.log( "defaultLink error");
+				} catch (FREInvalidObjectException e) {
+					e.printStackTrace();
+					Extension.log( "defaultLink error");
+				} catch (FREWrongThreadException e) {
+					e.printStackTrace();
+					Extension.log( "defaultLink error");
+				} catch (FRENoSuchNameException e) {
+					e.printStackTrace();
+					Extension.log( "defaultLink error");
+				} catch (FRETypeMismatchException e) {
+					e.printStackTrace();
+					Extension.log( "defaultLink error");
+				} catch (Exception e) {
+					e.printStackTrace();
+					Extension.log( "defaultLink error");
+				}
 
 				if( args.length > 1 ) {
 
@@ -111,23 +154,22 @@ public class ExtensionContext extends FREContext
 				}
 
 
-			} catch (FREASErrorException e) {
-				e.printStackTrace();
 			} catch (FREInvalidObjectException e) {
 				e.printStackTrace();
+				Extension.log( "global error");
+
 			} catch (FREWrongThreadException e) {
 				e.printStackTrace();
-			} catch (FRENoSuchNameException e) {
-				e.printStackTrace();
-			} catch (FRETypeMismatchException e) {
-				e.printStackTrace();
+				Extension.log( "global error");
+
 			}
 
-			Extension.log( message );
 
 			if( message == null ) {
 				Extension.log( "no message to send" );
 				return null;
+			} else {
+				Extension.log( message );
 			}
 
 			// ------------------------
@@ -150,6 +192,7 @@ public class ExtensionContext extends FREContext
 					Extension.log( e.getMessage() );
 				}
 			} else {
+				sharingIntent.putExtra(Intent.EXTRA_TEXT, message );  
 				sharingIntent.setType("text/plain");
 			}
 

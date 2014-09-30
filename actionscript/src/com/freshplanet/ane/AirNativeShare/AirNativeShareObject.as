@@ -1,9 +1,10 @@
 package com.freshplanet.ane.AirNativeShare
 {
-	import flash.display.BitmapData;
+
 
 	public class AirNativeShareObject
 	{
+
 		public var messageText:String;
 		public var mailText:String;
 		public var facebookText:String;
@@ -12,6 +13,7 @@ package com.freshplanet.ane.AirNativeShare
 		public var weiboText:String;
 		public var twitterText:String;
 
+		public var hasDefaultLink:Boolean;
 
 		public var defaultLink:String = null;
 		public var messageLink:String;
@@ -22,8 +24,6 @@ package com.freshplanet.ane.AirNativeShare
 		public var weiboLink:String;
 		public var twitterLink:String;
 		public var pinterestImageLink:String;
-
-		public var bitmapData:BitmapData = null;
 
 		public function AirNativeShareObject()
 		{

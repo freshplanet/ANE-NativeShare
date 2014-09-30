@@ -1,7 +1,7 @@
 Air Native Extension for Native Sharing (iOS)
 ======================================
 
-This is an [Air native extension](http://www.adobe.com/devnet/air/native-extensions-for-air.html) for displaying native share dialof on iOS. It has been developed by [FreshPlanet](http://freshplanet.com).
+This is an [Air native extension](http://www.adobe.com/devnet/air/native-extensions-for-air.html) for displaying native share dialog on iOS and Android. It has been developed by [FreshPlanet](http://freshplanet.com).
 
 
 Installation
@@ -25,6 +25,11 @@ This ANE currently supports displaying an alert popup with:
     AirNativeShare.getInstance().showShare(myShareObject)
     ```
 
+Additionaly, on Android, you need to ask the following permission:
+    
+    ```
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    ```
 
 Build script
 ---------

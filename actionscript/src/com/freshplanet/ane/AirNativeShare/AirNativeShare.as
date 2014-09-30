@@ -77,26 +77,33 @@ package com.freshplanet.ane.AirNativeShare
 		}
 
 
-		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null ) : void
+		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null, bitmapUrl:String = null, sourceUrl:String = null ) : void
 		{
 			
 			trace( "[AirNativeShare] show share:"+shareObject.messageText );
 			trace( "[AirNativeShare] isSupported:" + isSupported );
 			
 			if (!isSupported) return;
-			
-			
-			if (bitmapData) {
-				trace( "[AirNativeShare] with bitmap" );
-				_context.call("AirNativeShareShowShare", shareObject, bitmapData);
-			} else {
+
+			if (bitmapData)
+			{
+				if (bitmapUrl)
+				{
+					trace( "[AirNativeShare] with bitmap" );
+					_context.call("AirNativeShareShowShare", shareObject, bitmapData, bitmapUrl, sourceUrl);
+				} else
+				{
+					_context.call("AirNativeShareShowShare", shareObject, bitmapData);
+				}
+			} else
+			{
 				trace( "[AirNativeShare] without bitmap" );
 				_context.call("AirNativeShareShowShare", shareObject);
 			}
 			trace( "[AirNativeShare] show share returned" );
 		}
 
-		public function initForPinterest(pinterestClientId:String, pinterestSiteUrl:String, pinterestClientSuffix:String = null):void
+		public function initForPinterest(pinterestClientId:String, pinterestClientSuffix:String = null):void
 		{
 			if (Capabilities.manufacturer.indexOf("Android") > -1 ) return;
 			
@@ -104,10 +111,10 @@ package com.freshplanet.ane.AirNativeShare
 
 			if (pinterestClientSuffix)
 			{
-				_context.call("AirNativeShareInitPinterest", pinterestClientId, pinterestSiteUrl, pinterestClientSuffix);
+				_context.call("AirNativeShareInitPinterest", pinterestClientId, pinterestClientSuffix);
 			} else
 			{
-				_context.call("AirNativeShareInitPinterest", pinterestClientId, pinterestSiteUrl);
+				_context.call("AirNativeShareInitPinterest", pinterestClientId);
 			}
 
 		}

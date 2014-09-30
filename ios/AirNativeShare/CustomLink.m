@@ -7,6 +7,9 @@
 //
 
 #import "CustomLink.h"
+#import "CustomPinterestActivity.h"
+#import "CustomInstagramActivity.h"
+
 @interface CustomLink ()
 {
 }
@@ -101,10 +104,18 @@
     {
         return [NSURL URLWithString:self.twitterLink];
     }
-    if ([activityType isEqualToString: @"com.freshplanet.activity.CustomPinterestActivity"] && self.pinterestImageLink)
+    
+    
+    
+    if ([activityType isEqualToString: FPPinterestActivityType] && self.pinterestImageLink)
     {
         return [NSURL URLWithString:self.pinterestImageLink];
     }
+    if ([activityType isEqualToString: FPInstagramActivityType])
+    {
+        return [NSURL URLWithString:self.twitterLink];
+    }
+
     
     return nil;
 }
