@@ -42,13 +42,17 @@ package com.freshplanet.ane.AirNativeShare
 			if ( Capabilities.manufacturer.indexOf("Android") > -1) {
 				return true;
 			}
-			
-			if (isInitialized) {
-				return _isSupportedOnIOS;
-			} else {
-				_isSupportedOnIOS = _context.call("AirNativeShareIsSupported") as Boolean;
-				return _isSupportedOnIOS;
+
+			if (Capabilities.manufacturer.indexOf("iOS") > -1)
+			{
+				if (isInitialized) {
+					return _isSupportedOnIOS;
+				} else {
+					_isSupportedOnIOS = _context.call("AirNativeShareIsSupported") as Boolean;
+					return _isSupportedOnIOS;
+				}
 			}
+			return false;
 		}
 
 		public function AirNativeShare()
@@ -79,10 +83,10 @@ package com.freshplanet.ane.AirNativeShare
 
 		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null, bitmapUrl:String = null, sourceUrl:String = null ) : void
 		{
-			
+
 			trace( "[AirNativeShare] show share:"+shareObject.messageText );
 			trace( "[AirNativeShare] isSupported:" + isSupported );
-			
+
 			if (!isSupported) return;
 
 			if (bitmapData)
@@ -106,7 +110,7 @@ package com.freshplanet.ane.AirNativeShare
 		public function initForPinterest(pinterestClientId:String, pinterestClientSuffix:String = null):void
 		{
 			if (Capabilities.manufacturer.indexOf("Android") > -1 ) return;
-			
+
 			if (!isSupported) return;
 
 			if (pinterestClientSuffix)
