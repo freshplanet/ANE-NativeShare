@@ -36,22 +36,19 @@ package com.freshplanet.ane.AirNativeShare
 		private static var isInitialized:Boolean = false;
 		private static var _isSupportedOnIOS:Boolean = false;
 
-		/** AirAlert is supported on iOS and Android devices. */
+		/** supported on iOS and Android devices. */
 		public function get isSupported() : Boolean
 		{
-			if ( Capabilities.manufacturer.indexOf("iOS") == -1 )
-			{
-				return false;
+			if ( Capabilities.manufacturer.indexOf("Android") > -1) {
+				return true;
 			}
-			if (isInitialized)
-			{
+			
+			if (isInitialized) {
 				return _isSupportedOnIOS;
-			} else
-			{
+			} else {
 				_isSupportedOnIOS = _context.call("AirNativeShareIsSupported") as Boolean;
 				return _isSupportedOnIOS;
 			}
-
 		}
 
 		public function AirNativeShare()
@@ -82,12 +79,17 @@ package com.freshplanet.ane.AirNativeShare
 
 		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null, bitmapUrl:String = null, sourceUrl:String = null ) : void
 		{
+			
+			trace( "[AirNativeShare] show share:"+shareObject.messageText );
+			trace( "[AirNativeShare] isSupported:" + isSupported );
+			
 			if (!isSupported) return;
 
 			if (bitmapData)
 			{
 				if (bitmapUrl)
 				{
+					trace( "[AirNativeShare] with bitmap" );
 					_context.call("AirNativeShareShowShare", shareObject, bitmapData, bitmapUrl, sourceUrl);
 				} else
 				{
@@ -95,12 +97,16 @@ package com.freshplanet.ane.AirNativeShare
 				}
 			} else
 			{
+				trace( "[AirNativeShare] without bitmap" );
 				_context.call("AirNativeShareShowShare", shareObject);
 			}
+			trace( "[AirNativeShare] show share returned" );
 		}
 
 		public function initForPinterest(pinterestClientId:String, pinterestClientSuffix:String = null):void
 		{
+			if (Capabilities.manufacturer.indexOf("Android") > -1 ) return;
+			
 			if (!isSupported) return;
 
 			if (pinterestClientSuffix)
@@ -131,6 +137,9 @@ package com.freshplanet.ane.AirNativeShare
 			if (event.code == AirNativeShareEvent.SHARED)
 			{
 				this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.SHARED, event.level));
+			}
+			else {
+				trace( "[AirNativeShare]", event.level );
 			}
 		}
 	}

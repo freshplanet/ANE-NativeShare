@@ -11,6 +11,10 @@ actionscript/bin
 .settings
 .project
 
+# IntelliJ Idea
+.idea
+*.iml
+
 # Android
 android/bin
 android/gen
