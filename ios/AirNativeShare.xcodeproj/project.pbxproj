@@ -48,6 +48,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		472BCBA51A6EEA5B0056BC4B /* FlashRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashRuntimeExtensions.h; sourceTree = "<group>"; };
 		5A1B11B1197D76B400C0BAA8 /* CustomImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomImage.h; path = AirNativeShare/CustomImage.h; sourceTree = SOURCE_ROOT; };
 		5A1B11B2197D76B400C0BAA8 /* CustomImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomImage.m; path = AirNativeShare/CustomImage.m; sourceTree = SOURCE_ROOT; };
 		5A3A8A8D196DBCE400B2B4C1 /* AirNativeShare-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AirNativeShare-Prefix.pch"; path = "AirNativeShare/AirNativeShare-Prefix.pch"; sourceTree = SOURCE_ROOT; };
@@ -113,6 +114,7 @@
 		FAD66E6615D2C21A00BAA656 = {
 			isa = PBXGroup;
 			children = (
+				472BCBA51A6EEA5B0056BC4B /* FlashRuntimeExtensions.h */,
 				5AE0C5471979DF5B008E8CFE /* Pinterest.embeddedframework */,
 				FAD66E7615D2C21A00BAA656 /* AirNativeShare */,
 				FAD66E7315D2C21A00BAA656 /* Frameworks */,
