@@ -10,43 +10,31 @@
 	<string>AirNativeShare</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>4695C1A4-687C-42A1-9547-48FE2B90CAE3</key>
-		<string>ssh://github.com/freshplanet/ANE-NativeShare.git</string>
-		<key>B36B6056-BFB8-4BF5-BC83-21090A91D2A5</key>
-		<string>ssh://github.com/freshplanet/ANE-Pinterest.git</string>
+		<key>419F2A7EC64D35551A1E6750CB986FA9E3DE55E0</key>
+		<string>https://github.com/freshplanet/ANE-NativeShare.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ios/AirNativeShare.xcodeproj/project.xcworkspace</string>
+	<string>ios/AirNativeShare.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>4695C1A4-687C-42A1-9547-48FE2B90CAE3</key>
+		<key>419F2A7EC64D35551A1E6750CB986FA9E3DE55E0</key>
 		<string>../../..</string>
-		<key>B36B6056-BFB8-4BF5-BC83-21090A91D2A5</key>
-		<string>../../../../ANE-Pinterest</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/freshplanet/ANE-NativeShare.git</string>
+	<string>https://github.com/freshplanet/ANE-NativeShare.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>4695C1A4-687C-42A1-9547-48FE2B90CAE3</string>
+	<string>419F2A7EC64D35551A1E6750CB986FA9E3DE55E0</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>4695C1A4-687C-42A1-9547-48FE2B90CAE3</string>
+			<string>419F2A7EC64D35551A1E6750CB986FA9E3DE55E0</string>
 			<key>IDESourceControlWCCName</key>
-			<string>ANE-Native-Share</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>B36B6056-BFB8-4BF5-BC83-21090A91D2A5</string>
-			<key>IDESourceControlWCCName</key>
-			<string>ANE-Pinterest</string>
+			<string>ANE-NativeShare</string>
 		</dict>
 	</array>
 </dict>
