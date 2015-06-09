@@ -141,6 +141,9 @@ package com.freshplanet.ane.AirNativeShare
 			if (event.code == AirNativeShareEvent.SHARED)
 			{
 				this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.SHARED, event.level));
+			} else if (event.code == AirNativeShareEvent.CANCELLED)
+			{
+				this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.CANCELLED, null));
 			}
 			else {
 				trace( "[AirNativeShare]", event.level );

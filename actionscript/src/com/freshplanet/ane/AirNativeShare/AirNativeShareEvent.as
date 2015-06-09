@@ -6,6 +6,7 @@ package com.freshplanet.ane.AirNativeShare
 	{
 
 		public static const SHARED:String = "NATIVE_SHARE_SUCCESS";
+		public static const CANCELLED:String = "NATIVE_SHARE_CANCELLED";
 
 
 		private var _activityType:String;
