@@ -10,9 +10,10 @@
 #import "CustomPinterestActivity.h"
 #import "CustomInstagramActivity.h"
 
-@interface CustomText ()
-{
+@interface CustomText () {
 }
+
+@property(nonatomic, retain) NSString *defaultText;
 @property(nonatomic, retain) NSString *messageText;
 @property(nonatomic, retain) NSString *mailText;
 @property(nonatomic, retain) NSString *facebookText;
@@ -25,10 +26,11 @@
 @implementation CustomText
 @synthesize twitterText;
 
-- (id) initWithFREObject:(FREObject)object;
-{
-    if ([self init])
-    {
+- (id)initWithFREObject:(FREObject)object {
+    
+    if ([self init]) {
+        
+        self.defaultText = [self getPropertyFromObject:object withName:(const uint8_t*)"defaultText"];
         self.messageText = [self getPropertyFromObject:object withName:(const uint8_t*)"messageText"];
         self.mailText = [self getPropertyFromObject:object withName:(const uint8_t*)"mailText"];
         self.facebookText = [self getPropertyFromObject:object withName:(const uint8_t*)"facebookText"];
@@ -37,75 +39,52 @@
         self.weiboText = [self getPropertyFromObject:object withName:(const uint8_t*)"weiboText"];
         self.twitterText = [self getPropertyFromObject:object withName:(const uint8_t*)"twitterText"];
     }
+    
     return self;
 }
 
 
-- (NSString*) getPropertyFromObject:(FREObject)object withName:(const uint8_t*)name
-{
-    FREObject   propertyValue;
-    FREObject   exception;
-    uint32_t    string1Length;
-    const uint8_t *string1;
+- (NSString*)getPropertyFromObject:(FREObject)object withName:(const uint8_t*)name {
+    
+    FREObject       propertyValue;
+    FREObject       exception;
+    uint32_t        string1Length;
+    const uint8_t*  string1;
 
-    if (FREGetObjectProperty(object, name, &propertyValue, &exception) == FRE_OK)
-    {
+    if (FREGetObjectProperty(object, name, &propertyValue, &exception) == FRE_OK) {
+        
         FREGetObjectAsUTF8(propertyValue, &string1Length, &string1);
-        return[NSString stringWithUTF8String:(char*)string1];
-    } else
-    {
-        NSLog(@"couldn't get property");
-        return nil;
+        return [NSString stringWithUTF8String:(char*)string1];
     }
-
+    
+    return nil;
 }
 
 
-- (id) activityViewController:(UIActivityViewController *)activityViewController
-          itemForActivityType:(NSString *)activityType
-{
+- (id)activityViewController:(UIActivityViewController*)activityViewController itemForActivityType:(NSString*)activityType {
+    
     if (activityType == UIActivityTypeMessage)
-    {
         return self.messageText;
-    }
-    if (activityType == UIActivityTypeMail)
-    {
+    else if (activityType == UIActivityTypeMail)
         return self.mailText;
-    }
-    if (activityType == UIActivityTypePostToFacebook)
-    {
+    else if (activityType == UIActivityTypePostToFacebook)
         return self.facebookText;
-    }
-    if (activityType == UIActivityTypePostToFlickr)
-    {
+    else if (activityType == UIActivityTypePostToFlickr)
         return self.flickrText;
-    }
-    if (activityType == UIActivityTypePostToVimeo)
-    {
+    else if (activityType == UIActivityTypePostToVimeo)
         return self.vimeoText;
-    }
-    if (activityType == UIActivityTypePostToTencentWeibo)
-    {
+    else if (activityType == UIActivityTypePostToTencentWeibo)
         return self.weiboText;
-    }
-    if (activityType == UIActivityTypePostToWeibo)
-    {
+    else if (activityType == UIActivityTypePostToWeibo)
         return self.weiboText;
-    }
-    if (activityType == UIActivityTypePostToTwitter)
-    {
+    else if (activityType == UIActivityTypePostToTwitter)
         return self.twitterText;
-    }
-    
-    if ([activityType isEqualToString:FPPinterestActivityType])
-    {
+    else if ([activityType isEqualToString:FPPinterestActivityType])
         return self.twitterText;
-    }
-    
-    if ([activityType isEqualToString:FPInstagramActivityType])
-    {
+    else if ([activityType isEqualToString:FPInstagramActivityType])
         return self.twitterText;
-    }
+    else if (self.defaultText)
+        return self.defaultText;
     
     return @"";
 }

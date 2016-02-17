@@ -25,12 +25,12 @@
 
 FREContext myAirNativeShareCtx = nil;
 
-
 @implementation AirNativeShare
 
 @synthesize documentController;
 
-+(id) sharedInstance {
++ (id)sharedInstance {
+    
     static id sharedInstance = nil;
     if (sharedInstance == nil) {
         sharedInstance = [[self alloc] init];
@@ -39,251 +39,213 @@ FREContext myAirNativeShareCtx = nil;
     return sharedInstance;
 }
 
-
-
 @end
-
 
 #pragma mark - C interface
 
-DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
-{
-    CustomText* caption = [[CustomText alloc] initWithFREObject:argv[0]];
+DEFINE_ANE_FUNCTION(AirNativeShareShowShare) {
+    
+    // setup
+    
+    NSMutableArray *activityItems = [[NSMutableArray alloc] init];
+    
     CustomLink* link = nil;
     UIImage*    image = nil;
-    NSString *imagePath = nil;
+    NSString*   imagePath = nil;
     
-    if (argc > 0)
-    {
-        FREObject   propertyValue;
-        FREObject   exception;
-        uint32_t    string1Length;
-        const uint8_t *string1;
+    // text
+    
+    CustomText* caption = [[CustomText alloc] initWithFREObject:argv[0]];
+    
+    if (argc > 0) {
         
-        if (FREGetObjectProperty(argv[0], (const uint8_t*)"hasDefaultLink", &propertyValue, &exception) == FRE_OK)
-        {
+        // url
+        
+        FREObject       propertyValue;
+        FREObject       exception;
+        uint32_t        string1Length;
+        const uint8_t*  string1;
+        
+        if (FREGetObjectProperty(argv[0], (const uint8_t*)"hasDefaultLink", &propertyValue, &exception) == FRE_OK) {
+            
             NSLog(@"checking link");
-            if (FPANE_FREObjectToBool(propertyValue))
-            {
-                if (FREGetObjectProperty(argv[0], (const uint8_t*)"defaultLink", &propertyValue, &exception) == FRE_OK)
-                {
+            
+            if (FPANE_FREObjectToBool(propertyValue)) {
+                
+                if (FREGetObjectProperty(argv[0], (const uint8_t*)"defaultLink", &propertyValue, &exception) == FRE_OK) {
+                    
                     FREGetObjectAsUTF8(propertyValue, &string1Length, &string1);
                     link = [[CustomLink alloc] initWithFREObject:argv[0] andURLPath:[NSString stringWithUTF8String:(char*)string1]];
                 }
             }
-        } else
-        {
-            NSLog(@"couldn't get link");
         }
         
-        if (argc > 1)
-        {
-            NSLog(@"got bitmapData");
+        // image
+        
+        if (argc > 1) {
+            
+            NSLog(@"found bitmapData");
+            
             FREBitmapData bitmapData;
-            if (FREAcquireBitmapData(argv[1], &bitmapData) == FRE_OK)
-            {
+            
+            if (FREAcquireBitmapData(argv[1], &bitmapData) == FRE_OK) {
                 
                 // make data provider from buffer
                 CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, bitmapData.bits32, (bitmapData.width * bitmapData.height * 4), NULL);
                 
                 // set up for CGImage creation
-                int                     bitsPerComponent    = 8;
-                int                     bitsPerPixel        = 32;
-                int                     bytesPerRow         = 4 * bitmapData.width;
-                CGColorSpaceRef         colorSpaceRef       = CGColorSpaceCreateDeviceRGB();
-                CGBitmapInfo            bitmapInfo;
+                int             bitsPerComponent    = 8;
+                int             bitsPerPixel        = 32;
+                int             bytesPerRow         = 4 * bitmapData.width;
+                CGColorSpaceRef colorSpaceRef       = CGColorSpaceCreateDeviceRGB();
+                CGBitmapInfo    bitmapInfo;
                 
-                if( bitmapData.hasAlpha )
-                {
-                    if( bitmapData.isPremultiplied )
+                if (!bitmapData.hasAlpha)
+                    bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;
+                else {
+                    
+                    if (bitmapData.isPremultiplied)
                         bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst;
                     else
                         bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaFirst;
                 }
-                else
-                {
-                    bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;
-                }
                 
-                CGColorRenderingIntent  renderingIntent     = kCGRenderingIntentDefault;
-                CGImageRef imageRef           = CGImageCreate(bitmapData.width, bitmapData.height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, YES, renderingIntent);
+                CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+                CGImageRef imageRef = CGImageCreate(bitmapData.width, bitmapData.height, bitsPerComponent,
+                                                    bitsPerPixel, bytesPerRow, colorSpaceRef,
+                                                    bitmapInfo, provider, NULL, YES, renderingIntent);
                 
                 // make UIImage from CGImage
                 image = [UIImage imageWithCGImage:imageRef];
                 
                 FREReleaseBitmapData(argv[1]);
                 
-                NSData *imageData= UIImagePNGRepresentation(image);
-//                (<#UIImage *image#>)(image,0.0);
+                NSData* imageData = UIImagePNGRepresentation(image);
                 imagePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"/insta.igo"];
                 [imageData writeToFile:imagePath atomically:YES];
-
-                if (argc > 3)
-                {
-                    NSString * imageUrl = FPANE_FREObjectToNSString(argv[2]);
-                    NSString * sourceUrl = FPANE_FREObjectToNSString(argv[3]);
+                
+                if (argc < 4)
+                    image = [UIImage imageWithContentsOfFile:imagePath];
+                else {
+                    
+                    NSString* imageUrl = FPANE_FREObjectToNSString(argv[2]);
+                    NSString* sourceUrl = FPANE_FREObjectToNSString(argv[3]);
+                    
                     NSLog(@"image url %@", imageUrl);
+                    
                     CustomImage* myImage = [[CustomImage alloc] initWithContentsOfFile:imagePath];
                     myImage.imageUrl = imageUrl;
                     myImage.sourceUrl = sourceUrl;
+                    
                     image = myImage;
-                } else
-                {
-                    image = [UIImage imageWithContentsOfFile:imagePath];
                 }
-                
             }
-        } else
-        {
-            NSLog(@"couldn't get bitmapData");
         }
-
     }
     
-
-    NSMutableArray *activityItems = [[NSMutableArray alloc] init];
-    if (caption)
-    {
+    if (caption) {
+        
         [activityItems addObject:caption];
+        NSLog(@"caption added");
     }
     
-    NSLog(@"caption added");
-    
-    if (link != nil)
-    {
+    if (link) {
+        
         [activityItems addObject:link];
-    } else
-    {
-        NSLog(@"link is null");
+        NSLog(@"link added");
     }
     
-    NSLog(@"link added");
-    
-    if (image != nil)
-    {
+    if (image) {
+        
         [activityItems addObject:image];
         NSLog(@"image added");
-
-    } else
-    {
-        NSLog(@"image is null");
-
     }
 
-    NSLog(@"showing root");
+    // share
+    
+    CustomPinterestActivity* pinActivity = [[CustomPinterestActivity alloc] init];
+    CustomInstagramActivity* instagramActivity = [[CustomInstagramActivity alloc] init];
+    
+    UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
 
+    UIActivityViewController* activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems
+                                                                                     applicationActivities:@[instagramActivity, pinActivity]];
     
-    
-    CustomPinterestActivity *pinActivity = [[CustomPinterestActivity alloc] init];
-    CustomInstagramActivity *instagramActivity = [[CustomInstagramActivity alloc] init];
-    
-    
-    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:@[instagramActivity, pinActivity]];
+    // share callback
     
     [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-        
-        if (completed && [activityType isEqualToString:FPInstagramActivityType])
-        {
+    
+        if (completed) {
             
-            UIDocumentInteractionController * documentController;
-            documentController = [UIDocumentInteractionController interactionControllerWithURL: [NSURL fileURLWithPath:imagePath]];
-
-            ((AirNativeShare*)[AirNativeShare sharedInstance]).documentController = documentController;
+            // IG
             
-            
-            // setting specific param
-            documentController.UTI = @"com.instagram.exclusivegram";
-            if (caption != nil)
-            {
-                documentController.annotation = [NSDictionary dictionaryWithObject:caption.twitterText forKey:@"InstagramCaption"];
+            if ([activityType isEqualToString:FPInstagramActivityType]) {
+                
+                UIDocumentInteractionController * documentController;
+                documentController = [UIDocumentInteractionController interactionControllerWithURL: [NSURL fileURLWithPath:imagePath]];
+                
+                ((AirNativeShare*)[AirNativeShare sharedInstance]).documentController = documentController;
+                
+                // setting specific param
+                documentController.UTI = @"com.instagram.exclusivegram";
+                if (caption != nil)
+                    documentController.annotation = [NSDictionary dictionaryWithObject:caption.twitterText forKey:@"InstagramCaption"];
+                
+                // Present the tweet composition view controller modally.
+                id delegate = [[UIApplication sharedApplication] delegate];
+                
+                documentController.delegate = delegate;
+                
+                UIView *rootView = [[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
+                
+                [documentController presentOpenInMenuFromRect:CGRectMake(0, 0, 100, 100) inView:rootView animated:YES];
             }
             
-            // Present the tweet composition view controller modally.
-            id delegate = [[UIApplication sharedApplication] delegate];
-            
-            documentController.delegate = delegate;
-            
-            UIView *rootView = [[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
-            
-            [documentController presentOpenInMenuFromRect:CGRectMake(0, 0, 100, 100) inView:rootView animated:YES];
-        }
-        
-        
-        
-        if (completed)
-        {
-            NSString *shareType = @"Unknown";
+            NSString* shareType = @"Unknown";
             
             if (activityType == UIActivityTypeMessage)
-            {
                 shareType = @"SMS";
-            }
-            if (activityType == UIActivityTypeMail)
-            {
+            else if (activityType == UIActivityTypeMail)
                 shareType = @"Mail";
-            }
-            if (activityType == UIActivityTypePostToFacebook)
-            {
+            else if (activityType == UIActivityTypePostToFacebook)
                 shareType = @"Facebook";
-            }
-            if (activityType == UIActivityTypePostToFlickr)
-            {
+            else if (activityType == UIActivityTypePostToFlickr)
                 shareType = @"Flickr";
-            }
-            if (activityType == UIActivityTypePostToVimeo)
-            {
+            else if (activityType == UIActivityTypePostToVimeo)
                 shareType = @"Vimeo";
-            }
-            if (activityType == UIActivityTypePostToTencentWeibo)
-            {
+            else if (activityType == UIActivityTypePostToTencentWeibo)
                 shareType = @"TencentWeibo";
-            }
-            if (activityType == UIActivityTypePostToWeibo)
-            {
+            else if (activityType == UIActivityTypePostToWeibo)
                 shareType = @"Weibo";
-            }
-            if (activityType == UIActivityTypePostToTwitter)
-            {
+            else if (activityType == UIActivityTypePostToTwitter)
                 shareType = @"Twitter";
-            }
-            if ([activityType isEqualToString:FPInstagramActivityType])
-            {
+            else if ([activityType isEqualToString:FPInstagramActivityType])
                 shareType = @"Instagram";
-            }
-            if ([activityType isEqualToString:FPPinterestActivityType])
-            {
+            else if ([activityType isEqualToString:FPPinterestActivityType])
                 shareType = @"Pinterest";
-            }
-
             
             FPANE_DispatchEventWithInfo(myAirNativeShareCtx, @"NATIVE_SHARE_SUCCESS", shareType);
         } else
         {
             FPANE_DispatchEvent(myAirNativeShareCtx, @"NATIVE_SHARE_CANCELLED");
         }
-        
-        
     }];
     
+    // present
     
-    
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
+        [rootViewController presentViewController:activityController animated:YES completion:nil];
+    else {
+        
         UIPopoverController *popup = [[UIPopoverController alloc] initWithContentViewController:activityController];
         UIView *view = rootViewController.view;
-        [popup presentPopoverFromRect:CGRectMake(view.frame.size.width/2 - 50, view.frame.size.height/2 - 50, 100, 100) inView:view permittedArrowDirections:0 animated:YES];
-
         
-    } else {
-        // present modally
-        [rootViewController presentViewController:activityController animated:YES completion:nil];
+        [popup presentPopoverFromRect:CGRectMake(view.frame.size.width/2 - 50, view.frame.size.height/2 - 50, 100, 100)
+                               inView:view
+             permittedArrowDirections:0
+                             animated:YES];
     }
 
-    
-    
     return nil;
 }
 
@@ -325,12 +287,10 @@ void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FRE
     func[0].functionData = NULL;
     func[0].function = &AirNativeShareShowShare;
     
-    
     func[1].name = (const uint8_t*) "AirNativeShareInitPinterest";
     func[1].functionData = NULL;
     func[1].function = &AirNativeShareInitPinterest;
 
-    
     func[2].name = (const uint8_t*) "AirNativeShareIsSupported";
     func[2].functionData = NULL;
     func[2].function = &AirNativeShareIsSupported;

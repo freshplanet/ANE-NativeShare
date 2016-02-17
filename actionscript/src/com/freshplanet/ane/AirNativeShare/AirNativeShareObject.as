@@ -1,10 +1,8 @@
-package com.freshplanet.ane.AirNativeShare
-{
+package com.freshplanet.ane.AirNativeShare {
 
+	public class AirNativeShareObject {
 
-	public class AirNativeShareObject
-	{
-
+        public var defaultText:String;
 		public var messageText:String;
 		public var mailText:String;
 		public var facebookText:String;
@@ -25,12 +23,9 @@ package com.freshplanet.ane.AirNativeShare
 		public var twitterLink:String;
 		public var pinterestImageLink:String;
 
-		public function AirNativeShareObject()
-		{
-		}
+		public function setDefaultText(value:String):void {
 
-		public function setDefaultText(value:String):void
-		{
+            defaultText = value;
 			messageText = value;
 			mailText = value;
 			facebookText = value;
@@ -40,8 +35,8 @@ package com.freshplanet.ane.AirNativeShare
 			twitterText = value;
 		}
 
-		public function setDefaultLink(value:String):void
-		{
+		public function setDefaultLink(value:String):void {
+
 			defaultLink = value;
 			messageLink = value;
 			mailLink = value;

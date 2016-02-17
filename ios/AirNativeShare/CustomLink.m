@@ -10,9 +10,9 @@
 #import "CustomPinterestActivity.h"
 #import "CustomInstagramActivity.h"
 
-@interface CustomLink ()
-{
+@interface CustomLink () {
 }
+
 @property(nonatomic, retain) NSString *defaultLink;
 @property(nonatomic, retain) NSString *messageLink;
 @property(nonatomic, retain) NSString *mailLink;
@@ -22,18 +22,18 @@
 @property(nonatomic, retain) NSString *weiboLink;
 @property(nonatomic, retain) NSString *twitterLink;
 @property(nonatomic, retain) NSString *pinterestImageLink;
+
 @end
 
 @implementation CustomLink
 
-- (id) initWithFREObject:(FREObject)object andURLPath:(NSString *)urlPath;
-{
+- (id) initWithFREObject:(FREObject)object andURLPath:(NSString *)urlPath {
+    
     if (urlPath == nil)
-    {
         return nil;
-    }
-    if ([self initWithString:urlPath])
-    {
+
+    if ([self initWithString:urlPath]) {
+        
         self.defaultLink = [self getPropertyFromObject:object withName:(const uint8_t*)"defaultLink"];
         self.messageLink = [self getPropertyFromObject:object withName:(const uint8_t*)"messageLink"];
         self.mailLink = [self getPropertyFromObject:object withName:(const uint8_t*)"mailLink"];
@@ -44,26 +44,25 @@
         self.twitterLink = [self getPropertyFromObject:object withName:(const uint8_t*)"twitterLink"];
         self.pinterestImageLink = [self getPropertyFromObject:object withName:(const uint8_t*)"pinterestImageLink"];
     }
+    
     return self;
 }
 
 
-- (NSString*) getPropertyFromObject:(FREObject)object withName:(const uint8_t*)name
-{
-    FREObject   propertyValue;
-    FREObject   exception;
-    uint32_t    string1Length;
-    const uint8_t *string1;
+- (NSString*) getPropertyFromObject:(FREObject)object withName:(const uint8_t*)name {
     
-    if (FREGetObjectProperty(object, name, &propertyValue, &exception) == FRE_OK)
-    {
+    FREObject       propertyValue;
+    FREObject       exception;
+    uint32_t        string1Length;
+    const uint8_t*  string1;
+    
+    if (FREGetObjectProperty(object, name, &propertyValue, &exception) == FRE_OK) {
+        
         FREGetObjectAsUTF8(propertyValue, &string1Length, &string1);
-        return[NSString stringWithUTF8String:(char*)string1];
-    } else
-    {
-        NSLog(@"couldn't get property");
-        return nil;
+        return [NSString stringWithUTF8String:(char*)string1];
     }
+    
+    return nil;
     
 }
 
@@ -117,7 +116,7 @@
     }
 
     
-    return nil;
+    return [NSURL URLWithString:self.defaultLink];
 }
 
 - (id) activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController { return [NSURL URLWithString:self.defaultLink]; }

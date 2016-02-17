@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "FlashRuntimeExtensions.h"
 
-@interface CustomText : UIActivityItemProvider <UIActivityItemSource>
-@property(nonatomic, retain) NSString *twitterText;
+@interface CustomText : NSString <UIActivityItemSource>
+
+@property(nonatomic, retain) NSString* twitterText;
+
 - (id) initWithFREObject:(FREObject)object;
+
 @end
