@@ -259,6 +259,9 @@ DEFINE_ANE_FUNCTION(AirNativeShareShowShare)
 
             
             FPANE_DispatchEventWithInfo(myAirNativeShareCtx, @"NATIVE_SHARE_SUCCESS", shareType);
+        } else
+        {
+            FPANE_DispatchEvent(myAirNativeShareCtx, @"NATIVE_SHARE_CANCELLED");
         }
         
         
