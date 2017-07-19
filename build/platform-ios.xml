@@ -1,4 +1,4 @@
-/*
+<!--/*
  * Copyright 2017 FreshPlanet
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,19 +11,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */-->
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import "FPANEUtils.h"
-
-@interface AirNativeShare : NSObject {
-    FREContext _context;
-}
-
-@end
-
-void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet);
-void AirNativeShareContextFinalizer(FREContext ctx);
-void AirNativeShareInitializer(void** extDataToSet, FREContextInitializer* ctxInitializerToSet, FREContextFinalizer* ctxFinalizerToSet);
-void AirNativeShareFinalizer(void *extData);
+<platform xmlns="http://ns.adobe.com/air/extension/20.0">
+    <sdkVersion>8.0</sdkVersion>
+    <linkerOptions>
+    </linkerOptions>
+    <packagedDependencies>
+    </packagedDependencies>
+</platform>

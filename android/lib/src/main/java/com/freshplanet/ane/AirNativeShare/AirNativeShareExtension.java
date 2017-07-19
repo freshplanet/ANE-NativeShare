@@ -13,17 +13,21 @@
  * limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import "FPANEUtils.h"
+package com.freshplanet.ane.AirNativeShare;
 
-@interface AirNativeShare : NSObject {
-    FREContext _context;
+import com.adobe.fre.FREContext;
+import com.adobe.fre.FREExtension;
+
+public class AirNativeShareExtension implements FREExtension {
+	public static AirNativeShareExtensionContext context;
+
+	public FREContext createContext(String extId) {
+		return context = new AirNativeShareExtensionContext();
+	}
+
+	public void dispose() {
+		context = null;
+	}
+	
+	public void initialize() {}
 }
-
-@end
-
-void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet);
-void AirNativeShareContextFinalizer(FREContext ctx);
-void AirNativeShareInitializer(void** extDataToSet, FREContextInitializer* ctxInitializerToSet, FREContextFinalizer* ctxFinalizerToSet);
-void AirNativeShareFinalizer(void *extData);
