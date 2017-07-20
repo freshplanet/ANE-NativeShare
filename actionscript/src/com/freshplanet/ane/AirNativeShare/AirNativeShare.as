@@ -48,7 +48,7 @@ package com.freshplanet.ane.AirNativeShare {
 
 		/**
 		 * AirNativeShare instance
-		 * @return AirFlurry instance
+		 * @return AirNativeShare instance
 		 */
 		public static function get instance() : AirNativeShare {
 			return _instance ? _instance : new AirNativeShare();
@@ -56,7 +56,7 @@ package com.freshplanet.ane.AirNativeShare {
 
 
 		/**
-		 *
+		 * Show share dialog
 		 * @param itemsToShare items must be a string or BitmapData
 		 */
 		public function showShare( itemsToShare:Array ) : void {
