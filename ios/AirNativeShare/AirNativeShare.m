@@ -83,7 +83,10 @@ DEFINE_ANE_FUNCTION(showShareDialog) {
         
         
         UIActivityViewController* activityViewController =[[UIActivityViewController alloc] initWithActivityItems:dataToShare applicationActivities:nil];
-        
+        if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+        {
+            activityViewController.popoverPresentationController.sourceView = rootViewController.view;
+        }
         
         [activityViewController setCompletionWithItemsHandler:^(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError) {
             if (completed) {
