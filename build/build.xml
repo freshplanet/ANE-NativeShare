@@ -37,13 +37,9 @@
         </exec>
 
         <!-- copy the libs and resources to the base temp ios directory -->
-        <copy todir="temp/ios" overwrite="true" includeEmptyDirs="false" flatten="true">
-            <fileset dir="../ios/">
-                <include name="build/Release-iphoneos/**/*"/>
+        <copy todir="temp/ios" overwrite="true" includeEmptyDirs="false" flatten="false">
+            <fileset dir="../ios/build/Release-iphoneos/">
                 <exclude name="**/*Pods-${name}*"/>
-                <exclude name="**/*.bundle/"/>
-                <exclude name="**/*.nib/"/>
-                <exclude name="**/*.h"/>
             </fileset>
         </copy>
 
@@ -51,8 +47,6 @@
         <for param="path">
             <path>
                 <dirset dir="../ios/">
-                    <include name="build/Release-iphoneos/**/*.bundle"/>
-                    <include name="build/Release-iphoneos/**/*.nib"/>
                     <include name="**/*.framework"/>
                 </dirset>
             </path>
@@ -67,7 +61,6 @@
         <!-- remove the build directory -->
         <delete dir="../ios/build/"/>
     </target>
-
 
     <!-- Android -->
     <target name="android" description="Build Android Library">
@@ -87,6 +80,7 @@
         <!-- clean the build -->
         <exec executable="./gradlew" dir="../android">
             <env key="JAVA_HOME" path="${java.home}"/>
+            <env key="ANDROID_HOME" path="${android.sdk.home}"/>
             <arg line="clean"/>
         </exec>
 
@@ -100,6 +94,16 @@
         <!-- get the jar -->
         <copy file="${build.release}/classes.jar" tofile="temp/android/lib${name}.jar"/>
 
+        <!-- Copy over required resources -->
+        <if>
+            <equals arg1="${include.shared.resources}" arg2="true"/>
+            <then>
+                <copy todir="temp/android/${name}-res">
+                    <fileset dir="${build.intermediates}/res/merged/release"/>
+                </copy>
+            </then>
+        </if>
+
         <!-- Copy over the bundled libs -->
         <copy todir="temp/android">
             <fileset dir="${build.release}/libs" excludes="FlashRuntimeExtensions.jar, runtimeClasses.jar"/>
@@ -109,9 +113,6 @@
         <exec executable="/bin/bash">
             <arg value="extractJars.sh"/>
         </exec>
-
-        <!-- remove the build classes -->
-        <delete dir="../android/lib/build"/>
     </target>
 
     <!-- Actionscript -->
@@ -142,7 +143,6 @@
         <copy file="temp/swc/content/library.swf" todir="temp/android" overwrite="true"/>
         <copy file="temp/swc/content/library.swf" todir="temp/default" overwrite="true"/>
     </target>
-
 
     <!-- Package -->
     <target name="package" description="Create the extension package">
