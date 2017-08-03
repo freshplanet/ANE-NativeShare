@@ -13,17 +13,11 @@
  * limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import "FPANEUtils.h"
+#ifndef Constants_h
+#define Constants_h
 
-@interface AirNativeShare : NSObject {
-    FREContext _context;
-}
 
-@end
+#endif /* Constants_h */
 
-void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet);
-void AirNativeShareContextFinalizer(FREContext ctx);
-void AirNativeShareInitializer(void** extDataToSet, FREContextInitializer* ctxInitializerToSet, FREContextFinalizer* ctxFinalizerToSet);
-void AirNativeShareFinalizer(void *extData);
+static NSString *const kAirNativeShareEvent_didShare = @"AirNativeShareEvent_didShare";
+static NSString *const kAirNativeShareEvent_cancelled = @"AirNativeShareEvent_cancelled";

@@ -16,13 +16,7 @@ Usage
 This ANE currently supports displaying an alert popup with:
     
     ```actionscript
-    // Defining your share object
-    var myShareObject:AirNativeShareObject = new AirNativeShareObject();
-    myShareObject.facebookText = "This will be shared on Facebook"
-    myShareObject.facebookLink = "http://www.google.com"
-
-    // Display a share dialog for the aforementioned shareObject
-    AirNativeShare.getInstance().showShare(myShareObject)
+    AirNativeShare.instance.showShare(["http://freshplanet.com", "Hello Planet", bitmapData]);
     ```
 
 Additionaly, on Android, you need to ask the following permission:
@@ -45,7 +39,7 @@ Should you need to edit the extension source code and/or recompile it, you will 
 Authors
 ------
 
-This ANE has been written by [Thibaut Crenn](https://github.com/FreshTiti). It belongs to [FreshPlanet Inc.](http://freshplanet.com) and is distributed under the [Apache Licence, version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+This ANE has been written by [Thibaut Crenn](https://github.com/FreshTiti) and [Mateo Kozomara](mateo.kozomara@gmail.com). It belongs to [FreshPlanet Inc.](http://freshplanet.com) and is distributed under the [Apache Licence, version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 
 Join the FreshPlanet team - GAME DEVELOPMENT in NYC

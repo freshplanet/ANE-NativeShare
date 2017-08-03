@@ -1,313 +1,139 @@
-//////////////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright 2012 Freshplanet (http://freshplanet.com | opensource@freshplanet.com)
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-//
-//////////////////////////////////////////////////////////////////////////////////////
+/*
+ * Copyright 2017 FreshPlanet
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #import "AirNativeShare.h"
-#import "CustomText.h"
-#import "CustomLink.h"
-#import "CustomPinterestActivity.h"
-#import "CustomInstagramActivity.h"
-#import "CustomImage.h"
+#import "Constants.h"
 
-FREContext myAirNativeShareCtx = nil;
+@interface AirNativeShare ()
+    @property (nonatomic, readonly) FREContext context;
+@end
 
 @implementation AirNativeShare
 
-@synthesize documentController;
-
-+ (id)sharedInstance {
+- (instancetype)initWithContext:(FREContext)extensionContext {
     
-    static id sharedInstance = nil;
-    if (sharedInstance == nil) {
-        sharedInstance = [[self alloc] init];
+    if ((self = [super init])) {
+        
+        _context = extensionContext;
     }
     
-    return sharedInstance;
+    return self;
 }
 
+- (void) sendLog:(NSString*)log {
+    [self sendEvent:@"log" level:log];
+}
+
+- (void) sendEvent:(NSString*)code {
+    [self sendEvent:code level:@""];
+}
+
+- (void) sendEvent:(NSString*)code level:(NSString*)level {
+    FREDispatchStatusEventAsync(_context, (const uint8_t*)[code UTF8String], (const uint8_t*)[level UTF8String]);
+}
 @end
 
-#pragma mark - C interface
+AirNativeShare* GetAirNativeShareContextNativeData(FREContext context) {
+    
+    CFTypeRef controller;
+    FREGetContextNativeData(context, (void**)&controller);
+    return (__bridge AirNativeShare*)controller;
+}
 
-DEFINE_ANE_FUNCTION(AirNativeShareShowShare) {
+DEFINE_ANE_FUNCTION(showShareDialog) {
     
-    // setup
+    AirNativeShare* controller = GetAirNativeShareContextNativeData(context);
     
-    NSMutableArray *activityItems = [[NSMutableArray alloc] init];
+    if (!controller)
+        return FPANE_CreateError(@"context's AirNativeShare is null", 0);
     
-    CustomLink* link = nil;
-    UIImage*    image = nil;
-    NSString*   imagePath = nil;
     
-    // text
+    @try {
     
-    CustomText* caption = [[CustomText alloc] initWithFREObject:argv[0]];
-    
-    if (argc > 0) {
-        
-        // url
-        
-        FREObject       propertyValue;
-        FREObject       exception;
-        uint32_t        string1Length;
-        const uint8_t*  string1;
-        
-        if (FREGetObjectProperty(argv[0], (const uint8_t*)"hasDefaultLink", &propertyValue, &exception) == FRE_OK) {
+        NSMutableArray *dataToShare = [[NSMutableArray alloc] init];
+        NSArray *rawStringsToShare = FPANE_FREObjectToNSArrayOfNSString(argv[0]);
+        for (NSString *stringToShare in rawStringsToShare) {
             
-            NSLog(@"checking link");
-            
-            if (FPANE_FREObjectToBool(propertyValue)) {
-                
-                if (FREGetObjectProperty(argv[0], (const uint8_t*)"defaultLink", &propertyValue, &exception) == FRE_OK) {
-                    
-                    FREGetObjectAsUTF8(propertyValue, &string1Length, &string1);
-                    link = [[CustomLink alloc] initWithFREObject:argv[0] andURLPath:[NSString stringWithUTF8String:(char*)string1]];
-                }
+            if ([stringToShare containsString:@"http://"] || [stringToShare containsString:@"https://"]) {
+                [dataToShare addObject:[NSURL URLWithString:stringToShare]];
             }
+            else {
+                [dataToShare addObject:stringToShare];
+            }
+            
         }
-        
-        // image
-        
-        if (argc > 1) {
-            
-            NSLog(@"found bitmapData");
-            
-            FREBitmapData bitmapData;
-            
-            if (FREAcquireBitmapData(argv[1], &bitmapData) == FRE_OK) {
-                
-                // make data provider from buffer
-                CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, bitmapData.bits32, (bitmapData.width * bitmapData.height * 4), NULL);
-                
-                // set up for CGImage creation
-                int             bitsPerComponent    = 8;
-                int             bitsPerPixel        = 32;
-                int             bytesPerRow         = 4 * bitmapData.width;
-                CGColorSpaceRef colorSpaceRef       = CGColorSpaceCreateDeviceRGB();
-                CGBitmapInfo    bitmapInfo;
-                
-                if (!bitmapData.hasAlpha)
-                    bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;
-                else {
-                    
-                    if (bitmapData.isPremultiplied)
-                        bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst;
-                    else
-                        bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaFirst;
-                }
-                
-                CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
-                CGImageRef imageRef = CGImageCreate(bitmapData.width, bitmapData.height, bitsPerComponent,
-                                                    bitsPerPixel, bytesPerRow, colorSpaceRef,
-                                                    bitmapInfo, provider, NULL, YES, renderingIntent);
-                
-                // make UIImage from CGImage
-                image = [UIImage imageWithCGImage:imageRef];
-                
-                FREReleaseBitmapData(argv[1]);
-                
-                NSData* imageData = UIImagePNGRepresentation(image);
-                imagePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"/insta.igo"];
-                [imageData writeToFile:imagePath atomically:YES];
-                
-                if (argc < 4)
-                    image = [UIImage imageWithContentsOfFile:imagePath];
-                else {
-                    
-                    NSString* imageUrl = FPANE_FREObjectToNSString(argv[2]);
-                    NSString* sourceUrl = FPANE_FREObjectToNSString(argv[3]);
-                    
-                    NSLog(@"image url %@", imageUrl);
-                    
-                    CustomImage* myImage = [[CustomImage alloc] initWithContentsOfFile:imagePath];
-                    myImage.imageUrl = imageUrl;
-                    myImage.sourceUrl = sourceUrl;
-                    
-                    image = myImage;
-                }
-            }
-        }
-    }
-    
-    if (caption) {
-        
-        [activityItems addObject:caption];
-        NSLog(@"caption added");
-    }
-    
-    if (link) {
-        
-        [activityItems addObject:link];
-        NSLog(@"link added");
-    }
-    
-    if (image) {
-        
-        [activityItems addObject:image];
-        NSLog(@"image added");
-    }
 
-    // share
-    
-    CustomPinterestActivity* pinActivity = [[CustomPinterestActivity alloc] init];
-    CustomInstagramActivity* instagramActivity = [[CustomInstagramActivity alloc] init];
-    
-    UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-
-    UIActivityViewController* activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems
-                                                                                     applicationActivities:@[instagramActivity, pinActivity]];
-    
-    // share callback
-    
-    [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-    
-        if (completed) {
-            
-            // IG
-            
-            if ([activityType isEqualToString:FPInstagramActivityType]) {
-                
-                UIDocumentInteractionController * documentController;
-                documentController = [UIDocumentInteractionController interactionControllerWithURL: [NSURL fileURLWithPath:imagePath]];
-                
-                ((AirNativeShare*)[AirNativeShare sharedInstance]).documentController = documentController;
-                
-                // setting specific param
-                documentController.UTI = @"com.instagram.exclusivegram";
-                if (caption != nil)
-                    documentController.annotation = [NSDictionary dictionaryWithObject:caption.twitterText forKey:@"InstagramCaption"];
-                
-                // Present the tweet composition view controller modally.
-                id delegate = [[UIApplication sharedApplication] delegate];
-                
-                documentController.delegate = delegate;
-                
-                UIView *rootView = [[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
-                
-                [documentController presentOpenInMenuFromRect:CGRectMake(0, 0, 100, 100) inView:rootView animated:YES];
-            }
-            
-            NSString* shareType = @"Unknown";
-            
-            if (activityType == UIActivityTypeMessage)
-                shareType = @"SMS";
-            else if (activityType == UIActivityTypeMail)
-                shareType = @"Mail";
-            else if (activityType == UIActivityTypePostToFacebook)
-                shareType = @"Facebook";
-            else if (activityType == UIActivityTypePostToFlickr)
-                shareType = @"Flickr";
-            else if (activityType == UIActivityTypePostToVimeo)
-                shareType = @"Vimeo";
-            else if (activityType == UIActivityTypePostToTencentWeibo)
-                shareType = @"TencentWeibo";
-            else if (activityType == UIActivityTypePostToWeibo)
-                shareType = @"Weibo";
-            else if (activityType == UIActivityTypePostToTwitter)
-                shareType = @"Twitter";
-            else if ([activityType isEqualToString:FPInstagramActivityType])
-                shareType = @"Instagram";
-            else if ([activityType isEqualToString:FPPinterestActivityType])
-                shareType = @"Pinterest";
-            
-            FPANE_DispatchEventWithInfo(myAirNativeShareCtx, @"NATIVE_SHARE_SUCCESS", shareType);
-        } else
+        NSArray *imagesToShare = FPANE_FREObjectToNSArrayOfUIImage(argv[1]);
+        [dataToShare addObjectsFromArray:imagesToShare];
+        
+        [controller sendLog:[@"Sharing now... : " stringByAppendingString:@""]];
+        UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+        
+        
+        UIActivityViewController* activityViewController =[[UIActivityViewController alloc] initWithActivityItems:dataToShare applicationActivities:nil];
+        if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
         {
-            FPANE_DispatchEvent(myAirNativeShareCtx, @"NATIVE_SHARE_CANCELLED");
+            activityViewController.popoverPresentationController.sourceView = rootViewController.view;
         }
-    }];
-    
-    // present
-    
-    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-        [rootViewController presentViewController:activityController animated:YES completion:nil];
-    else {
         
-        UIPopoverController *popup = [[UIPopoverController alloc] initWithContentViewController:activityController];
-        UIView *view = rootViewController.view;
-        
-        [popup presentPopoverFromRect:CGRectMake(view.frame.size.width/2 - 50, view.frame.size.height/2 - 50, 100, 100)
-                               inView:view
-             permittedArrowDirections:0
-                             animated:YES];
+        [activityViewController setCompletionWithItemsHandler:^(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError) {
+            if (completed) {
+                [controller sendEvent:kAirNativeShareEvent_didShare level:activityType];
+            }
+            else {
+                [controller sendEvent:kAirNativeShareEvent_cancelled];
+            }
+            
+        }];
+        [rootViewController presentViewController:activityViewController animated:true completion:nil];
     }
-
-    return nil;
-}
-
-
-DEFINE_ANE_FUNCTION(AirNativeShareInitPinterest)
-{
-    NSString * pinterestClientId = FPANE_FREObjectToNSString(argv[0]);
-    NSString * pinterestSuffix = nil;
-    if (argc > 1)
-    {
-        pinterestSuffix = FPANE_FREObjectToNSString(argv[1]);
+    @catch (NSException *exception) {
+        [controller sendLog:[@"Exception occured while trying to share : " stringByAppendingString:exception.reason]];
     }
     
-    [CustomPinterestActivity initWithClientId:pinterestClientId suffix:pinterestSuffix];
-
+    
     return nil;
 }
-
-DEFINE_ANE_FUNCTION(AirNativeShareIsSupported)
-{
-    NSLog(@"check if supported");
-    BOOL isSupported = NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1;
-    NSLog(@"is supported");
-    return FPANE_BOOLToFREObject(isSupported);
-}
-
 
 #pragma mark - ANE setup
 
-void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
-{
-    // Register the links btwn AS3 and ObjC. (dont forget to modify the nbFuntionsToLink integer if you are adding/removing functions)
-    NSInteger nbFuntionsToLink = 3;
-    *numFunctionsToTest = nbFuntionsToLink;
+void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx,
+                                 uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet) {
     
-    FRENamedFunction* func = (FRENamedFunction*) malloc(sizeof(FRENamedFunction) * nbFuntionsToLink);
+    AirNativeShare* controller = [[AirNativeShare alloc] initWithContext:ctx];
+    FRESetContextNativeData(ctx, (void*)CFBridgingRetain(controller));
     
-    func[0].name = (const uint8_t*) "AirNativeShareShowShare";
-    func[0].functionData = NULL;
-    func[0].function = &AirNativeShareShowShare;
+    static FRENamedFunction functions[] = {
+        MAP_FUNCTION(showShareDialog, NULL)
+    };
     
-    func[1].name = (const uint8_t*) "AirNativeShareInitPinterest";
-    func[1].functionData = NULL;
-    func[1].function = &AirNativeShareInitPinterest;
-
-    func[2].name = (const uint8_t*) "AirNativeShareIsSupported";
-    func[2].functionData = NULL;
-    func[2].function = &AirNativeShareIsSupported;
-
-    *functionsToSet = func;
+    *numFunctionsToTest = sizeof(functions) / sizeof(FRENamedFunction);
+    *functionsToSet = functions;
     
-    myAirNativeShareCtx = ctx;
-
 }
 
-void AirNativeShareContextFinalizer(FREContext ctx) { }
-
-void AirNativeShareInitializer(void** extDataToSet, FREContextInitializer* ctxInitializerToSet, FREContextFinalizer* ctxFinalizerToSet)
-{
-	*extDataToSet = NULL;
-	*ctxInitializerToSet = &AirNativeShareContextInitializer;
-	*ctxFinalizerToSet = &AirNativeShareContextFinalizer;
+void AirNativeShareContextFinalizer(FREContext ctx) {
+    CFTypeRef controller;
+    FREGetContextNativeData(ctx, (void **)&controller);
+    CFBridgingRelease(controller);
 }
 
-void AirNativeShareFinalizer(void* extData) { }
+void AirNativeShareInitializer(void** extDataToSet, FREContextInitializer* ctxInitializerToSet, FREContextFinalizer* ctxFinalizerToSet ) {
+    *extDataToSet = NULL;
+    *ctxInitializerToSet = &AirNativeShareContextInitializer;
+    *ctxFinalizerToSet = &AirNativeShareContextFinalizer;
+}
+
+void AirNativeShareFinalizer(void *extData) {}

@@ -1,31 +1,28 @@
-//////////////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright 2014 Freshplanet (http://freshplanet.com | opensource@freshplanet.com)
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-//
-//////////////////////////////////////////////////////////////////////////////////////
+/*
+ * Copyright 2017 FreshPlanet
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-package com.freshplanet.ane.AirNativeShare
-{
+package com.freshplanet.ane.AirNativeShare {
+
+	import com.freshplanet.ane.AirNativeShare.events.AirNativeShareEvent;
 	import flash.display.BitmapData;
 	import flash.events.EventDispatcher;
 	import flash.events.StatusEvent;
 	import flash.external.ExtensionContext;
 	import flash.system.Capabilities;
 
-	public class AirNativeShare extends EventDispatcher
-	{
+	public class AirNativeShare extends EventDispatcher {
 		// --------------------------------------------------------------------------------------//
 		//																						 //
 		// 									   PUBLIC API										 //
@@ -33,93 +30,57 @@ package com.freshplanet.ane.AirNativeShare
 		// --------------------------------------------------------------------------------------//
 
 
-		private static var isInitialized:Boolean = false;
-		private static var _isSupportedOnIOS:Boolean = false;
-
 		/** supported on iOS and Android devices. */
-		public function get isSupported() : Boolean
-		{
-			if ( Capabilities.manufacturer.indexOf("Android") > -1) {
-				return true;
-			}
-
-			if (Capabilities.manufacturer.indexOf("iOS") > -1)
-			{
-				if (isInitialized) {
-					return _isSupportedOnIOS;
-				} else {
-					_isSupportedOnIOS = _context.call("AirNativeShareIsSupported") as Boolean;
-					return _isSupportedOnIOS;
-				}
-			}
-			return false;
+		public static function get isSupported() : Boolean {
+			return isAndroid || isIOS;
 		}
 
-		public function AirNativeShare()
-		{
-			if (!_instance)
-			{
-				_context = ExtensionContext.createExtensionContext(EXTENSION_ID, null);
-				if (!_context)
-				{
-					throw Error("ERROR - Extension context is null. Please check if extension.xml is setup correctly.");
-					return;
-				}
-				_context.addEventListener(StatusEvent.STATUS, onStatus);
-
-				_instance = this;
-			}
-			else
-			{
-				throw Error("This is a singleton, use getInstance(), do not call the constructor directly.");
-			}
+		/**
+		 * If <code>true</code>, logs will be displayed at the Actionscript level.
+		 */
+		public function get logEnabled() : Boolean {
+			return _logEnabled;
 		}
 
-		public static function getInstance() : AirNativeShare
-		{
+		public function set logEnabled( value : Boolean ) : void {
+			_logEnabled = value;
+		}
+
+		/**
+		 * AirNativeShare instance
+		 * @return AirNativeShare instance
+		 */
+		public static function get instance() : AirNativeShare {
 			return _instance ? _instance : new AirNativeShare();
 		}
 
 
-		public function showShare( shareObject:AirNativeShareObject, bitmapData:BitmapData = null, bitmapUrl:String = null, sourceUrl:String = null ) : void
-		{
+		/**
+		 * Show share dialog
+		 * @param itemsToShare items must be a string or BitmapData
+		 */
+		public function showShare( itemsToShare:Array ) : void {
 
-			trace( "[AirNativeShare] show share:"+shareObject.messageText );
-			trace( "[AirNativeShare] isSupported:" + isSupported );
+			if(!isSupported)
+				return;
 
-			if (!isSupported) return;
+			var stringsToShare:Array = [];
+			var imagesToShare:Array = [];
 
-			if (bitmapData)
-			{
-				if (bitmapUrl)
-				{
-					trace( "[AirNativeShare] with bitmap" );
-					_context.call("AirNativeShareShowShare", shareObject, bitmapData, bitmapUrl, sourceUrl);
-				} else
-				{
-					_context.call("AirNativeShareShowShare", shareObject, bitmapData);
+			for (var i:int = 0; i < itemsToShare.length; i++) {
+				var object:Object = itemsToShare[i];
+				if (object is String) {
+					stringsToShare.push(object);
 				}
-			} else
-			{
-				trace( "[AirNativeShare] without bitmap" );
-				_context.call("AirNativeShareShowShare", shareObject);
+				else if (object is BitmapData) {
+					imagesToShare.push(object);
+				}
+				else {
+					log("Detected incorrect parameter in itemsToShare. Only String and BitmapData objects are allowed. Will skip this parameter.");
+				}
 			}
-			trace( "[AirNativeShare] show share returned" );
-		}
 
-		public function initForPinterest(pinterestClientId:String, pinterestClientSuffix:String = null):void
-		{
-			if (Capabilities.manufacturer.indexOf("Android") > -1 ) return;
-
-			if (!isSupported) return;
-
-			if (pinterestClientSuffix)
-			{
-				_context.call("AirNativeShareInitPinterest", pinterestClientId, pinterestClientSuffix);
-			} else
-			{
-				_context.call("AirNativeShareInitPinterest", pinterestClientId);
-			}
+			_context.call("showShareDialog", stringsToShare, imagesToShare);
 
 		}
 
@@ -130,24 +91,52 @@ package com.freshplanet.ane.AirNativeShare
 		// 																						 //
 		// --------------------------------------------------------------------------------------//
 
-		private static const EXTENSION_ID : String = "com.freshplanet.AirNativeShare";
-
+		private static const EXTENSION_ID : String = "com.freshplanet.ane.AirNativeShare";
 		private static var _instance : AirNativeShare;
+		private var _context : ExtensionContext = null;
+		private var _logEnabled : Boolean = true;
 
-		private var _context : ExtensionContext;
+		/**
+		 * "private" singleton constructor
+		 */
+		public function AirNativeShare() {
+			if (!_instance) {
+				_context = ExtensionContext.createExtensionContext(EXTENSION_ID, null);
+				if (!_context) {
+					log("ERROR - Extension context is null. Please check if extension.xml is setup correctly.");
+					return;
+				}
+				_context.addEventListener(StatusEvent.STATUS, onStatus);
 
-		private function onStatus( event : StatusEvent ) : void
-		{
-			if (event.code == AirNativeShareEvent.SHARED)
-			{
-				this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.SHARED, event.level));
-			} else if (event.code == AirNativeShareEvent.CANCELLED)
-			{
-				this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.CANCELLED, null));
+				_instance = this;
 			}
 			else {
-				trace( "[AirNativeShare]", event.level );
+				throw Error("This is a singleton, use instance, do not call the constructor directly.");
 			}
+		}
+
+		private function onStatus( event : StatusEvent ) : void {
+			if (event.code == AirNativeShareEvent.DID_SHARE) {
+				this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.DID_SHARE, event.level));
+
+			} else if (event.code == AirNativeShareEvent.CANCELLED) {
+				this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.CANCELLED, null));
+			}
+			else if (event.code == "log") {
+				log(event.level);
+			}
+		}
+
+		private function log(message:String):void {
+			if (_logEnabled) trace("[AirNativeShare] " + message);
+		}
+
+		private static function get isAndroid():Boolean {
+			return Capabilities.manufacturer.indexOf("Android") > -1;
+		}
+
+		private static function get isIOS():Boolean {
+			return Capabilities.manufacturer.indexOf("iOS") > -1;
 		}
 	}
 }
