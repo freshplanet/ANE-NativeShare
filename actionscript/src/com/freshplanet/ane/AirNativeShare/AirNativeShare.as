@@ -84,6 +84,23 @@ package com.freshplanet.ane.AirNativeShare {
 
 		}
 
+		/**
+		 * Show custom share dialog with platform specific texts. iOS ONLY
+		 */
+		public function showShareWithCustomTexts( customTexts:AirNativeShareCustomText, url:String = null, bitmapData:BitmapData = null ) : void {
+
+			if(!isIOS)
+				return;
+
+
+			if(!url)
+				url = "";
+
+			if(bitmapData != null)
+				_context.call("showShareWithCustomTexts", customTexts, url, bitmapData);
+			else
+				_context.call("showShareWithCustomTexts", customTexts, url);
+		}
 
 		// --------------------------------------------------------------------------------------//
 		//																						 //
