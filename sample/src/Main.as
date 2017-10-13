@@ -50,7 +50,7 @@ public class Main extends Sprite {
         this.addChild(_scrollableContainer);
 
         if (!AirNativeShare.isSupported) {
-            trace("AirFlurry ANE is NOT supported on this platform!");
+            trace("AirNativeShare ANE is NOT supported on this platform!");
             return;
         }
 
