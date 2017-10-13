@@ -58,13 +58,13 @@ DEFINE_ANE_FUNCTION(showShareDialog) {
     AirNativeShare* controller = GetAirNativeShareContextNativeData(context);
     
     if (!controller)
-        return FPANE_CreateError(@"context's AirNativeShare is null", 0);
+        return AirNativeShare_FPANE_CreateError(@"context's AirNativeShare is null", 0);
     
     
     @try {
     
         NSMutableArray *dataToShare = [[NSMutableArray alloc] init];
-        NSArray *rawStringsToShare = FPANE_FREObjectToNSArrayOfNSString(argv[0]);
+        NSArray *rawStringsToShare = AirNativeShare_FPANE_FREObjectToNSArrayOfNSString(argv[0]);
         for (NSString *stringToShare in rawStringsToShare) {
             
             if ([stringToShare containsString:@"http://"] || [stringToShare containsString:@"https://"]) {
@@ -76,8 +76,10 @@ DEFINE_ANE_FUNCTION(showShareDialog) {
             
         }
 
-        NSArray *imagesToShare = FPANE_FREObjectToNSArrayOfUIImage(argv[1]);
-        [dataToShare addObjectsFromArray:imagesToShare];
+        NSArray *imagesToShare = AirNativeShare_FPANE_FREObjectToNSArrayOfUIImage(argv[1]);
+        if (imagesToShare.count > 0) {
+            [dataToShare addObjectsFromArray:imagesToShare];
+        }
         
         [controller sendLog:[@"Sharing now... : " stringByAppendingString:@""]];
         UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
@@ -113,18 +115,18 @@ DEFINE_ANE_FUNCTION(showShareWithCustomTexts) {
     AirNativeShare* controller = GetAirNativeShareContextNativeData(context);
     
     if (!controller)
-        return FPANE_CreateError(@"context's AirNativeShare is null", 0);
+        return AirNativeShare_FPANE_CreateError(@"context's AirNativeShare is null", 0);
     
     
     @try {
         
         CustomText* caption = [[CustomText alloc] initWithFREObject:argv[0]];
-        NSString* urlString = FPANE_FREObjectToNSString(argv[1]);
+        NSString* urlString = AirNativeShare_FPANE_FREObjectToNSString(argv[1]);
         NSURL* url = nil;
         if (![urlString isEqualToString:@""]) {
             url = [NSURL URLWithString:urlString];
         }
-        UIImage* image = argc > 2 ? FPANE_FREBitmapDataToUIImage(argv[2]) : nil;
+        UIImage* image = argc > 2 ? AirNativeShare_FPANE_FREBitmapDataToUIImage(argv[2]) : nil;
         
         NSMutableArray *dataToShare = [[NSMutableArray alloc] init];
         [dataToShare addObject:caption];
@@ -134,6 +136,7 @@ DEFINE_ANE_FUNCTION(showShareWithCustomTexts) {
         if(image != nil) {
             [dataToShare addObject:image];
         }
+        
         
         [controller sendLog:[@"Custom sharing now... : " stringByAppendingString:@""]];
         UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];

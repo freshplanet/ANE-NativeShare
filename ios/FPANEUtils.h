@@ -20,22 +20,22 @@
 #define MAP_FUNCTION(fn, data) { (const uint8_t*)(#fn), (data), &(fn) }
 #define ROOT_VIEW_CONTROLLER [[[UIApplication sharedApplication] keyWindow] rootViewController]
 
-void FPANE_DispatchEvent(FREContext context, NSString* eventName);
-void FPANE_DispatchEventWithInfo(FREContext context, NSString* eventName, NSString* eventInfo);
-void FPANE_Log(FREContext context, NSString* message);
+void AirNativeShare_FPANE_DispatchEvent(FREContext context, NSString* eventName);
+void AirNativeShare_FPANE_DispatchEventWithInfo(FREContext context, NSString* eventName, NSString* eventInfo);
+void AirNativeShare_FPANE_Log(FREContext context, NSString* message);
 
-NSString* FPANE_FREObjectToNSString(FREObject object);
-NSArray* FPANE_FREObjectToNSArrayOfNSString(FREObject object);
-NSDictionary* FPANE_FREObjectsToNSDictionaryOfNSString(FREObject keys, FREObject values);
-BOOL FPANE_FREObjectToBool(FREObject object);
-NSInteger FPANE_FREObjectToInt(FREObject object);
-double FPANE_FREObjectToDouble(FREObject object);
+NSString* AirNativeShare_FPANE_FREObjectToNSString(FREObject object);
+NSArray* AirNativeShare_FPANE_FREObjectToNSArrayOfNSString(FREObject object);
+NSDictionary* AirNativeShare_FPANE_FREObjectsToNSDictionaryOfNSString(FREObject keys, FREObject values);
+BOOL AirNativeShare_FPANE_FREObjectToBool(FREObject object);
+NSInteger AirNativeShare_FPANE_FREObjectToInt(FREObject object);
+double AirNativeShare_FPANE_FREObjectToDouble(FREObject object);
 
-FREObject FPANE_BOOLToFREObject(BOOL boolean);
-FREObject FPANE_IntToFREObject(NSInteger i);
-FREObject FPANE_DoubleToFREObject(double d);
-FREObject FPANE_NSStringToFREObject(NSString* string);
-FREObject FPANE_CreateError(NSString* error, NSInteger* id);
+FREObject AirNativeShare_FPANE_BOOLToFREObject(BOOL boolean);
+FREObject AirNativeShare_FPANE_IntToFREObject(NSInteger i);
+FREObject AirNativeShare_FPANE_DoubleToFREObject(double d);
+FREObject AirNativeShare_FPANE_NSStringToFREObject(NSString* string);
+FREObject AirNativeShare_FPANE_CreateError(NSString* error, NSInteger* id);
 
-UIImage* FPANE_FREBitmapDataToUIImage(FREObject object);
-NSArray* FPANE_FREObjectToNSArrayOfUIImage(FREObject object);
+UIImage* AirNativeShare_FPANE_FREBitmapDataToUIImage(FREObject object);
+NSArray* AirNativeShare_FPANE_FREObjectToNSArrayOfUIImage(FREObject object);
