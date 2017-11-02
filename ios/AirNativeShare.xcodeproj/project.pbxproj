@@ -11,6 +11,7 @@
 		A27464051F1F7BDF0072CE7F /* AirNativeShare.m in Sources */ = {isa = PBXBuildFile; fileRef = A27464041F1F7BDF0072CE7F /* AirNativeShare.m */; };
 		A27464061F1F7BDF0072CE7F /* AirNativeShare.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A27464031F1F7BDF0072CE7F /* AirNativeShare.h */; };
 		A274640F1F1F7DAA0072CE7F /* FPANEUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A274640E1F1F7DAA0072CE7F /* FPANEUtils.m */; };
+		FAECD8E71FAB6BBA00239FF0 /* CustomText.m in Sources */ = {isa = PBXBuildFile; fileRef = FAECD8E51FAB6BBA00239FF0 /* CustomText.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +38,8 @@
 		A274640E1F1F7DAA0072CE7F /* FPANEUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPANEUtils.m; sourceTree = "<group>"; };
 		A2CB72271F1FA838007F131A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		AAD75BB790C32170CF2CEBB8 /* libPods-AirNativeShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AirNativeShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAECD8E51FAB6BBA00239FF0 /* CustomText.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomText.m; sourceTree = "<group>"; };
+		FAECD8E61FAB6BBA00239FF0 /* CustomText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomText.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +78,8 @@
 		A27464021F1F7BDE0072CE7F /* AirNativeShare */ = {
 			isa = PBXGroup;
 			children = (
+				FAECD8E61FAB6BBA00239FF0 /* CustomText.h */,
+				FAECD8E51FAB6BBA00239FF0 /* CustomText.m */,
 				A2CB72271F1FA838007F131A /* Constants.h */,
 				A27464031F1F7BDF0072CE7F /* AirNativeShare.h */,
 				A27464041F1F7BDF0072CE7F /* AirNativeShare.m */,
@@ -192,6 +197,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAECD8E71FAB6BBA00239FF0 /* CustomText.m in Sources */,
 				A274640F1F1F7DAA0072CE7F /* FPANEUtils.m in Sources */,
 				A27464051F1F7BDF0072CE7F /* AirNativeShare.m in Sources */,
 			);
