@@ -10,7 +10,7 @@
 #import "FlashRuntimeExtensions.h"
 #import <UIKit/UIKit.h>
 
-@interface CustomText : NSString <UIActivityItemSource>
+@interface CustomText : NSObject <UIActivityItemSource>
 
 
 
