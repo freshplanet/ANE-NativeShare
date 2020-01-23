@@ -33,6 +33,22 @@
             </applicationDeployment>
         </platform>
 
+        <platform name="Android-ARM64">
+            <applicationDeployment>
+                <nativeLibrary>libAirNativeShare.jar</nativeLibrary>
+                <initializer>com.freshplanet.ane.AirNativeShare.AirNativeShareExtension</initializer>
+                <finalizer>com.freshplanet.ane.AirNativeShare.AirNativeShareExtension</finalizer>
+            </applicationDeployment>
+        </platform>
+
+        <platform name="Android-x86">
+            <applicationDeployment>
+                <nativeLibrary>libAirNativeShare.jar</nativeLibrary>
+                <initializer>com.freshplanet.ane.AirNativeShare.AirNativeShareExtension</initializer>
+                <finalizer>com.freshplanet.ane.AirNativeShare.AirNativeShareExtension</finalizer>
+            </applicationDeployment>
+        </platform>
+
         <platform name="default"> 
             <applicationDeployment/> 
         </platform> 
