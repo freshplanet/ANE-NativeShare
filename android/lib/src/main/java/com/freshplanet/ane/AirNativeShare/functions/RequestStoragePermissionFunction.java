@@ -13,27 +13,25 @@
  * limitations under the License.
  */
 
-package com.freshplanet.ane.AirNativeShare;
+package com.freshplanet.ane.AirNativeShare.functions;
+
+import android.content.Intent;
 
 import com.adobe.fre.FREContext;
-import com.adobe.fre.FREExtension;
+import com.adobe.fre.FREObject;
+import com.freshplanet.ane.AirNativeShare.StoragePermissionActivity;
 
-public class AirNativeShareExtension implements FREExtension {
-	public static AirNativeShareExtensionContext context;
+public class RequestStoragePermissionFunction extends BaseFunction {
 
-	public FREContext createContext(String extId) {
-		return context = new AirNativeShareExtensionContext();
+	public FREObject call(FREContext context, FREObject[] args) {
+		super.call(context, args);
+
+		Intent intent = new Intent(context.getActivity().getApplicationContext(), StoragePermissionActivity.class);
+		context.getActivity().startActivity(intent);
+
+
+		return null;
+
 	}
 
-	public static void dispatchEvent(String code, String level) {
-		if(context != null) {
-			context.dispatchStatusEventAsync(code, level);
-		}
-	}
-
-	public void dispose() {
-		context = null;
-	}
-	
-	public void initialize() {}
 }

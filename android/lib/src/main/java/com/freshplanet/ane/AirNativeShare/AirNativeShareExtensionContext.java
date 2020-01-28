@@ -17,6 +17,7 @@ package com.freshplanet.ane.AirNativeShare;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
+import com.freshplanet.ane.AirNativeShare.functions.RequestStoragePermissionFunction;
 import com.freshplanet.ane.AirNativeShare.functions.ShareFunction;
 
 import java.util.HashMap;
@@ -34,7 +35,8 @@ public class AirNativeShareExtensionContext extends FREContext {
 		Map<String, FREFunction> functions = new HashMap<String, FREFunction>();
 		
 		functions.put("showShareDialog", new ShareFunction());
-		return functions;	
+		functions.put("requestStoragePermission", new RequestStoragePermissionFunction());
+		return functions;
 	}
 
 

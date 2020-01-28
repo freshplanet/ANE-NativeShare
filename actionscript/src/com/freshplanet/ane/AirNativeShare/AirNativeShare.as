@@ -22,6 +22,7 @@ package com.freshplanet.ane.AirNativeShare {
 	import flash.external.ExtensionContext;
 	import flash.system.Capabilities;
 
+
 	public class AirNativeShare extends EventDispatcher {
 		// --------------------------------------------------------------------------------------//
 		//																						 //
@@ -64,6 +65,18 @@ package com.freshplanet.ane.AirNativeShare {
 			if(!isSupported)
 				return;
 
+			if(isAndroid) {
+				// wait for permission result first
+				_itemsToShare = itemsToShare;
+				_context.call("requestStoragePermission");
+				return;
+			}
+
+			shareItems(itemsToShare);
+
+		}
+
+		private function shareItems(itemsToShare:Array):void {
 			var stringsToShare:Array = [];
 			var imagesToShare:Array = [];
 
@@ -81,7 +94,6 @@ package com.freshplanet.ane.AirNativeShare {
 			}
 
 			_context.call("showShareDialog", stringsToShare, imagesToShare);
-
 		}
 
 		/**
@@ -112,6 +124,7 @@ package com.freshplanet.ane.AirNativeShare {
 		private static var _instance : AirNativeShare;
 		private var _context : ExtensionContext = null;
 		private var _logEnabled : Boolean = true;
+		private var _itemsToShare:Array = null;
 
 		/**
 		 * "private" singleton constructor
@@ -138,6 +151,11 @@ package com.freshplanet.ane.AirNativeShare {
 
 			} else if (event.code == AirNativeShareEvent.CANCELLED) {
 				this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.CANCELLED, null));
+			} else if (event.code == "permission_result") {
+				if(event.level == "granted" && _itemsToShare) {
+					shareItems(_itemsToShare.concat());
+				}
+				_itemsToShare = null;
 			}
 			else if (event.code == "log") {
 				log(event.level);
