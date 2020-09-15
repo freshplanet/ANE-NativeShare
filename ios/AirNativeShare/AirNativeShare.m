@@ -81,17 +81,28 @@ DEFINE_ANE_FUNCTION(showShareDialog) {
             [dataToShare addObjectsFromArray:imagesToShare];
         }
         
-        [controller sendLog:[@"Sharing now... : " stringByAppendingString:@""]];
-        UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-        
+        [controller sendLog:[@"0 Sharing now... : " stringByAppendingString:@""]];
+        //UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+        UIViewController *rootViewController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
         
         UIActivityViewController* activityViewController =[[UIActivityViewController alloc] initWithActivityItems:dataToShare applicationActivities:nil];
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
         {
-            activityViewController.popoverPresentationController.sourceView = rootViewController.view;
+            
+            [controller sendLog:[@"is an iPad... : " stringByAppendingString:@""]];
+
+            activityViewController.popoverPresentationController.sourceView = [[[[UIApplication sharedApplication] delegate] window] rootViewController].view;
+               
+            activityViewController.popoverPresentationController.sourceRect = CGRectMake(0,20, 0, 0);
+            
+            activityViewController.popoverPresentationController.permittedArrowDirections = NO;
+            
+
         }
         
         [activityViewController setCompletionWithItemsHandler:^(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError) {
+           
+            
             if (completed) {
                 [controller sendEvent:kAirNativeShareEvent_didShare level:activityType];
             }
@@ -100,7 +111,7 @@ DEFINE_ANE_FUNCTION(showShareDialog) {
             }
             
         }];
-        [rootViewController presentViewController:activityViewController animated:true completion:nil];
+        [rootViewController presentViewController:activityViewController animated:YES completion:nil];
     }
     @catch (NSException *exception) {
         [controller sendLog:[@"Exception occured while trying to share : " stringByAppendingString:exception.reason]];
@@ -139,13 +150,19 @@ DEFINE_ANE_FUNCTION(showShareWithCustomTexts) {
         
         
         [controller sendLog:[@"Custom sharing now... : " stringByAppendingString:@""]];
-        UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+        //UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
         
+        UIViewController *rootViewController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
         
         UIActivityViewController* activityViewController =[[UIActivityViewController alloc] initWithActivityItems:dataToShare applicationActivities:nil];
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
         {
-            activityViewController.popoverPresentationController.sourceView = rootViewController.view;
+            
+            activityViewController.popoverPresentationController.sourceView = [[[[UIApplication sharedApplication] delegate] window] rootViewController].view;
+            
+            activityViewController.popoverPresentationController.sourceRect = CGRectMake(0,20, 0, 0);
+
+            activityViewController.popoverPresentationController.permittedArrowDirections = NO;
         }
         
         [activityViewController setCompletionWithItemsHandler:^(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError) {
