@@ -114,6 +114,22 @@ package com.freshplanet.ane.AirNativeShare {
 				_context.call("showShareWithCustomTexts", customTexts, url);
 		}
 
+
+		public static const PROVIDER_FACEBOOK:String = "facebook";
+		public static const PROVIDER_INSTAGRAM:String = "instagram";
+		/**
+		 * Share to Instagram of Facebook story
+		 * @param appId - FBAppId for Facebook, app identifier for Instagram
+		 * @param bitmapData
+		 * @param provider
+		 */
+		public function shareToStory(appId:String, bitmapData:BitmapData, provider:String):void {
+			if(!bitmapData)
+				return;
+
+			_context.call("shareToStory", appId, bitmapData, provider);
+		}
+
 		// --------------------------------------------------------------------------------------//
 		//																						 //
 		// 									 	PRIVATE API										 //

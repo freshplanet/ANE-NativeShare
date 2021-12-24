@@ -167,6 +167,74 @@ DEFINE_ANE_FUNCTION(showShareWithCustomTexts) {
     return nil;
 }
 
+DEFINE_ANE_FUNCTION(shareToStory) {
+    
+    AirNativeShare* controller = GetAirNativeShareContextNativeData(context);
+    
+    if (!controller)
+        return AirNativeShare_FPANE_CreateError(@"context's AirNativeShare is null", 0);
+    
+    @try {
+        
+        NSString *appId = AirNativeShare_FPANE_FREObjectToNSString(argv[0]);
+        UIImage* image = AirNativeShare_FPANE_FREBitmapDataToUIImage(argv[1]);
+        NSString *provider = AirNativeShare_FPANE_FREObjectToNSString(argv[2]);
+
+        NSData *imageData = UIImagePNGRepresentation(image);
+        NSString *urlString = nil;
+        if([provider isEqualToString:@"facebook"]) {
+            urlString = @"facebook-stories://share";
+        }
+        else { //if ([provider isEqualToString:@"instagram"])
+            urlString = [@"instagram-stories://share?source_application=" stringByAppendingString:appId];
+        }
+       
+        // Verify app can open custom URL scheme, open if able
+        NSURL *urlScheme = [NSURL URLWithString:urlString];
+        
+        if ([[UIApplication sharedApplication] canOpenURL:urlScheme]) {
+        
+              // Assign background image asset to pasteboard
+            NSArray *pasteboardItems = nil;
+            if([provider isEqualToString:@"facebook"]) {
+                pasteboardItems = @[@{
+                    @"com.facebook.sharedSticker.appID" : appId,
+                    @"com.facebook.sharedSticker.backgroundImage" : imageData
+                }];
+            }
+            else { //if ([provider isEqualToString:@"instagram"])
+                pasteboardItems = @[@{@"com.instagram.sharedSticker.backgroundImage" : imageData}];
+            }
+            
+            
+              NSDictionary *pasteboardOptions = @{UIPasteboardOptionExpirationDate : [[NSDate date] dateByAddingTimeInterval:60 * 5]};
+              // This call is iOS 10+, can use 'setItems' depending on what versions you support
+              [[UIPasteboard generalPasteboard] setItems:pasteboardItems options:pasteboardOptions];
+          
+              [[UIApplication sharedApplication] openURL:urlScheme options:@{} completionHandler:^(BOOL success) {
+                  if(success) {
+                      [controller sendEvent:kAirNativeShareEvent_didShare];
+                  }
+                  else {
+                      [controller sendEvent:kAirNativeShareEvent_cancelled];
+                  }
+              }];
+            
+        } else {
+            // Handle older app versions or app not installed case
+            [controller sendLog:@"Cannot open facebook"];
+            [controller sendEvent:kAirNativeShareEvent_cancelled];
+        }
+        
+    }
+    @catch (NSException *exception) {
+        [controller sendLog:[@"Exception occured while trying to share : " stringByAppendingString:exception.reason]];
+    }
+    
+    
+    return nil;
+}
+
 #pragma mark - ANE setup
 
 void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx,
@@ -178,6 +246,7 @@ void AirNativeShareContextInitializer(void* extData, const uint8_t* ctxType, FRE
     static FRENamedFunction functions[] = {
         MAP_FUNCTION(showShareDialog, NULL),
         MAP_FUNCTION(showShareWithCustomTexts, NULL),
+        MAP_FUNCTION(shareToStory, NULL)
     };
     
     *numFunctionsToTest = sizeof(functions) / sizeof(FRENamedFunction);
