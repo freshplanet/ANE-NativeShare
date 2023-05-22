@@ -26,6 +26,7 @@ package com.freshplanet.ane.AirNativeShare.events {
 		 * Supported on iOS only
 		 */
 		public static const CANCELLED:String = "AirNativeShareEvent_cancelled";
+		public static const DENIED:String = "AirNativeShareEvent_denied";
 
 		private var _activityType:String;
 

@@ -171,6 +171,9 @@ package com.freshplanet.ane.AirNativeShare {
 				if(event.level == "granted" && _itemsToShare) {
 					shareItems(_itemsToShare.concat());
 				}
+				else if(event.level == "denied") {
+					this.dispatchEvent(new AirNativeShareEvent(AirNativeShareEvent.DENIED, null));
+				}
 				_itemsToShare = null;
 			}
 			else if (event.code == "log") {
