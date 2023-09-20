@@ -3,6 +3,7 @@ package com.freshplanet.ane.AirNativeShare;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,8 +21,12 @@ public class StoragePermissionActivity extends Activity {
             return;
         }
 
-        if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 11);
+        String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			permission = Manifest.permission.READ_MEDIA_IMAGES;
+		}
+        if(ContextCompat.checkSelfPermission(getApplicationContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, 11);
         }
         else  {
             AirNativeShareExtension.dispatchEvent("permission_result", "granted");
