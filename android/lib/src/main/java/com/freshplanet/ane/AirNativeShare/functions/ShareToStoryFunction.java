@@ -19,23 +19,31 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.util.Log;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREObject;
 import com.freshplanet.ane.AirNativeShare.AirNativeShareExtension;
+import com.freshplanet.ane.AirNativeShare.FileHelper;
+
+import java.io.IOException;
 
 public class ShareToStoryFunction extends BaseFunction {
 	public FREObject call(FREContext context, FREObject[] args) {
 		super.call(context, args);
 
-
 		String appId = getStringFromFREObject(args[0]);
 		Bitmap bitmap = getBitmapFromFREBitmapData(args[1]);
 		String provider = getStringFromFREObject(args[2]);
 
-		String pathOfBmp = MediaStore.Images.Media.insertImage(context.getActivity().getContentResolver(), bitmap, "air_native_share_media", "");
-		Uri bitmapUri = Uri.parse(pathOfBmp);
+		Uri bitmapUri;
+		try {
+			bitmapUri = FileHelper.saveBitmapForSharing(context.getActivity(), bitmap);
+		} catch (IOException e) {
+			AirNativeShareExtension.dispatchEvent("AirNativeShareEvent_cancelled", "");
+			Log.e("AirNativeShare", "Failed to save image to share", e);
+			return null;
+		}
 
 		String intentName;
 		if(provider.equals("facebook")) {

@@ -18,12 +18,12 @@ package com.freshplanet.ane.AirNativeShare.functions;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.adobe.fre.FREArray;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREObject;
+import com.freshplanet.ane.AirNativeShare.FileHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,17 +46,11 @@ public class ShareFunction extends BaseFunction {
 		sharingIntent.putExtra( Intent.EXTRA_SUBJECT, joinedMessage );
 		sharingIntent.putExtra(Intent.EXTRA_TEXT, joinedMessage );
 
-		ArrayList<Uri> files = new ArrayList<Uri>();
-
-
-		for(Bitmap bitmap: bitmaps) {
-			String pathOfBmp = MediaStore.Images.Media.insertImage(context.getActivity().getContentResolver(), bitmap, "air_native_share_media", "");
-			Uri uri = Uri.parse(pathOfBmp);
-			files.add(uri);
-		}
+		ArrayList<Uri> files = FileHelper.saveBitmapsForSharing(context.getActivity(), bitmaps);
 
 		if(bitmaps.size() > 0) {
 			sharingIntent.setType( "image/*" );
+			sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		}
 		else {
 			sharingIntent.setType( "text/plain" );
