@@ -21,10 +21,13 @@ public class StoragePermissionActivity extends Activity {
             return;
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            AirNativeShareExtension.dispatchEvent("permission_result", "granted");
+            finish();
+            return;
+        }
+
         String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-			permission = Manifest.permission.READ_MEDIA_IMAGES;
-		}
         if(ContextCompat.checkSelfPermission(getApplicationContext(), permission) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{permission}, 11);
         }
