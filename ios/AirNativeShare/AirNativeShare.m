@@ -222,7 +222,25 @@ DEFINE_ANE_FUNCTION(shareToStory) {
             
         } else {
             // Handle older app versions or app not installed case
-            [controller sendLog:@"Cannot open facebook"];
+            NSString *appStoreLink = nil;
+
+            if([provider isEqualToString:@"facebook"]) {
+                appStoreLink = @"https://apps.apple.com/app/facebook/id284882215";
+            }
+            else { //if ([provider isEqualToString:@"instagram"])
+                appStoreLink = @"https://apps.apple.com/app/instagram/id389801252";
+            }
+
+            NSURL *appStoreURL = [NSURL URLWithString:appStoreLink];
+
+            if ([[UIApplication sharedApplication] canOpenURL:appStoreURL]) {
+                [[UIApplication sharedApplication] openURL:appStoreURL options:@{} completionHandler:nil];
+            }
+            else {
+                // Handle the situation when the App Store URL can't be opened
+                [controller sendLog:@"Unable to open App Store URL."];
+            }
+
             [controller sendEvent:kAirNativeShareEvent_cancelled];
         }
         
